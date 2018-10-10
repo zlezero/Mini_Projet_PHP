@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 
 if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && empty($_POST['pwd'])) ) {
 
@@ -15,17 +16,22 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                 if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) {
 
                     if ($fichier == $listeFichiers[0]) {
+                        $_SESSION['role'] = "admin";
                         header('Location: admin.php');
                         exit;
                     }
                     else if ($fichier == $listeFichiers[1]) {
+                        $_SESSION['role'] = "etudiant";
                         header('Location: vote.php');
                         exit;
                     }
                     else {
+                        $_SESSION['role'] = "prof";
                         header('Location: prof.php');
                         exit;
                     }
+
+                    $_SESSION['id'] = $data[0];
 
                 }
                 
