@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <form class="form-group" action="connect.php" method="post">
+    <form class="form-group" action="login.php" method="post">
 
       <div class="row">
         <div class="col-md-3"></div>
