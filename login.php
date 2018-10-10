@@ -9,24 +9,25 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
     foreach($listeFichiers as $fichier) {
 
         if (file_exists($fichier)) {
+
             $pointeur = fopen($fichier, "r");
 
             while ( ($data = fgetcsv($pointeur)) !== FALSE) {
                 
                 if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) {
 
-                    if ($fichier == $listeFichiers[0]) {
+                    if ($fichier == $listeFichiers[0]) { #Si il s'agit d'un admin
                         $_SESSION['role'] = "admin";
                         header('Location: admin.php');
                         exit;
                     }
-                    else if ($fichier == $listeFichiers[1]) {
+                    else if ($fichier == $listeFichiers[1]) { #Si il s'agit d'un étudiant
                         $_SESSION['role'] = "etudiant";
                         header('Location: vote.php');
                         exit;
                     }
-                    else {
-                        $_SESSION['role'] = "prof";
+                    else { #Sinon il s'agit d'un prof
+                        $_SESSION['role'] = "prof"; 
                         header('Location: prof.php');
                         exit;
                     }
@@ -46,7 +47,7 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
 
 }
 else {
-    header('Location: index.php');
+    header('Location: index.php?erreur='.sha1("C'est une erreur !"));
     exit;
 }
 
