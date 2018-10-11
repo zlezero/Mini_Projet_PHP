@@ -27,6 +27,7 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                 }
                 
             }
+            fclose($pointeur);
         }
     }
     header('Location: index.php?erreur='.sha1("C'est une erreur !"));

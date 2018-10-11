@@ -12,7 +12,7 @@
         <hr>
         <?php 
           if (isset($_GET['erreur'])) {
-            afficherErreur("<strong>Identifient</strong> ou <strong>mot de passe</strong> incorrect !");
+            afficherErreur("<strong>Identifiant</strong> ou <strong>mot de passe</strong> incorrect !");
           }
         ?>
       </div>
