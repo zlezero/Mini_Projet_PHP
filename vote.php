@@ -29,51 +29,81 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
         
     }
 
-
 }
-
 
 if (!file_exists($voteFile)) {
 
-    echo '<form action="" method="post">';
+    echo '<form class="form-group" action="" method="post">';
     
     foreach($listeMatieres as $matieres => $ue) {
 
         ?>
-        
-        <fieldset>
 
-            <legend><?php echo $matieres ?></legend>
+        <div class="row">
 
-            <p>
-                Entrez l'appréciation souhaitée :
+            <div class="col-md-3"></div>
 
-                <?php 
-                
-                    foreach($notes as $note => $description) {
-                        echo '<input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" /> <label for="'.$ue.'-'.$note.'">'.$description.'</label>';
-                    }
-                
-                ?>
+            <div class="col-md-6">
 
-            </p>
+                <fieldset>
+
+                    <legend><?php echo $matieres ?></legend>
+
+                    <p>
+                        Sélectionnez l'appréciation souhaitée :
+
+                        <?php 
                         
-       </fieldset>
-    
+                            foreach($notes as $note => $description) {
+                                echo '<input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" /> <label for="'.$ue.'-'.$note.'">'.$description.'</label>';
+                            }
+                        
+                        ?>
+
+                    </p>
+                                
+                </fieldset>
+
+                <hr>
+
+            </div>
+
+        </div>
     
         <?php
     }
 
-    echo '<input type="submit" value="Voter">';
-    echo '</form>';
+    ?>
 
+        <div class="row">
+
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">Voter</button>
+            </div>
+    
+    </form>
+
+    <?php
    
 
 }
 else {
 
-    echo "<h1>Votre vote</h1>";
+    ?>
+    
+    <div class="row">
 
+        <div class="col-md-3"></div>
+        
+        <div class="col-md-6">
+            <h1>Votre vote</h1>
+        </div>
+
+    </div>
+
+    <?php
     if (file_exists($voteFile)) {
 
         $pointeur = fopen($voteFile, "r");
@@ -89,10 +119,11 @@ else {
 ?>
 
 <form class="form-group" action="logout.php" method="post">
-    <button type="submit" class="btn">Se déconnecter</button>
+    <button type="submit" class="btn btn-danger">Se déconnecter</button>
 </form>
 
-<?php
+</div>
 
+<?php
 require_once($fichiersInclude.'footer.php'); 
 ?>
