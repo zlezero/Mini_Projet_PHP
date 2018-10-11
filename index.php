@@ -1,9 +1,7 @@
 <?php 
-require_once('config.php');
-require_once($fichiersInclude.'head.php')
+  require_once('config.php');
+  require_once($fichiersInclude.'head.php')
 ?>
-
-
 
   <div id="container" class="container mt-5">
 
