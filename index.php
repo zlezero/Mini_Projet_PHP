@@ -1,6 +1,6 @@
 <?php 
 require_once('config.php');
-require_once('include/head.php') ?>
+require_once($fichiersInclude.'head.php') ?>
 
 <body>
 
@@ -53,6 +53,6 @@ require_once('include/head.php') ?>
 
 </body>
 
-<?php require_once('include/footer.php'); ?>
+<?php require_once($fichiersInclude.'footer.php'); ?>
 
 </html>

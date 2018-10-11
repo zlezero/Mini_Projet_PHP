@@ -13,6 +13,8 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
             while ( ($data = fgetcsv($pointeur)) !== FALSE) {
                 
                 if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) {
+                    
+                    $_SESSION['id'] = $data[0];
 
                     if ($fichier == $listeFichiers[0]) { #Si il s'agit d'un admin
                         $_SESSION['role'] = "admin";
@@ -29,8 +31,6 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                         header('Location: prof.php');
                         exit;
                     }
-
-                    $_SESSION['id'] = $data[0];
 
                 }
                 
