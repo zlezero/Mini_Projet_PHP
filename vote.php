@@ -96,12 +96,14 @@ else {
     <div class="row">
 
         <div class="col-md-3"></div>
-        
+
         <div class="col-md-6">
             <h1>Votre vote</h1>
         </div>
 
-    </div>
+        <fieldset>   
+
+    
 
     <?php
     if (file_exists($voteFile)) {
@@ -109,10 +111,12 @@ else {
         $pointeur = fopen($voteFile, "r");
 
         while ( ($data = fgetcsv($pointeur)) !== FALSE) {
-            echo $listeUE[$data[0]]." : ".$data[1]."/5</br>";
+            echo "<legend>".$listeUE[$data[0]]."</legend> : ".$data[1]."/5";
         }
 
     }
+
+    echo "</fieldset></div>";
 
 }
 
