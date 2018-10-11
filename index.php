@@ -54,5 +54,3 @@ require_once($fichiersInclude.'head.php') ?>
 </body>
 
 <?php require_once($fichiersInclude.'footer.php'); ?>
-
-</html>
