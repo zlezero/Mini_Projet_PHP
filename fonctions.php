@@ -1,8 +1,5 @@
 <?php 
-
 require_once("config.php");
-
-
 function afficherErreur($erreur) {
     ?>
     
@@ -20,19 +17,15 @@ function afficherErreur($erreur) {
 
     <?php
 }
-
 function estConnecte() {
     
     $roles = array("admin", "etudiant", "professeur");
-
     if (isset($_SESSION['id']) AND isset($_SESSION['role'])) {
         
         if ( (!empty($_SESSION['id'])) AND in_array($_SESSION['role'], $roles) ) {
             return TRUE;
         }
     }
-
     return FALSE;
 }
-
 ?>

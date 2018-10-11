@@ -1,8 +1,9 @@
 <?php 
 require_once('config.php');
-require_once($fichiersInclude.'head.php') ?>
+require_once($fichiersInclude.'head.php')
+?>
 
-<body>
+
 
   <div id="container" class="container mt-5">
 
@@ -12,23 +13,21 @@ require_once($fichiersInclude.'head.php') ?>
         <h1>Se connecter</h1>
         <hr>
         <?php 
-
           if (isset($_GET['erreur'])) {
             afficherErreur("<strong>Identifient</strong> ou <strong>mot de passe</strong> incorrect !");
           }
-
         ?>
       </div>
     </div>
 
     <form class="form-group" action="login.php" method="post">
 
-      <div class="row">
+        <div class="row">
 
         <div class="col-md-3"></div>
         <div class="col-md-6">
-          <label for="id">Identifients :</label>
-          <input type="id" class="form-control" id="id" name="id" placeholder="Identifient" required>
+          <label for="id">Identifiant :</label>
+          <input type="id" class="form-control" id="id" name="id" placeholder="Identifiant" required>
         </div>
       </div>
 

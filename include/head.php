@@ -1,8 +1,7 @@
 <!doctype html>
-
 <html lang="fr">
-
 <head>
+    <link rel="icon" type="image/jpg" href="images/icon.jpg" />
     <meta charset="utf-8">
     <title>Evaluation des enseignements</title>
     <meta name="description" content="Mini projet PhP">
@@ -12,6 +11,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+
+    <style>
+        body { 
+            padding-top: 65px; 
+        }
+    </style>
 </head>
+<body>
+    <nav id="navigation" class="navbar navbar-expand-lg navbar-light bg-light fixed-top justify-content-between navbar-toggleable-md">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="">Evaluation des enseignements</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <img src="images/uvsq.jpg" width="150px">
+            </li>
+        </ul>
+    </nav>
