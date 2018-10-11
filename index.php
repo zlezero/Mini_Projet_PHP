@@ -1,5 +1,5 @@
 <?php 
-require_once('fonctions.php');
+require_once('config.php');
 require_once('include/head.php') ?>
 
 <body>

@@ -1,7 +1,5 @@
 <?php 
 
-session_start();
-
 function afficherErreur($erreur) {
     ?>
     
@@ -18,6 +16,17 @@ function afficherErreur($erreur) {
     </div> 
 
     <?php
+}
+
+function estConnecte() {
+
+    if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
+        if ( !empty($_SESSION['id']) && in_array($_SESSION['role'], $roles) ) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }
 
 ?>

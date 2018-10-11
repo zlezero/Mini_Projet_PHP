@@ -1,10 +1,8 @@
 <?php
 
-session_start();
+require_once('config.php');
 
 if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && empty($_POST['pwd'])) ) {
-
-    $listeFichiers = array("csv/id-admin.csv", "csv/id-student.csv", "csv/id-profs.csv");
 
     foreach($listeFichiers as $fichier) {
 
@@ -27,7 +25,7 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                         exit;
                     }
                     else { #Sinon il s'agit d'un prof
-                        $_SESSION['role'] = "prof"; 
+                        $_SESSION['role'] = "professeur"; 
                         header('Location: prof.php');
                         exit;
                     }
