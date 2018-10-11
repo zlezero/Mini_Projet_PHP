@@ -1,4 +1,6 @@
-<?php require_once('include/head.php') ?>
+<?php 
+require_once('fonctions.php');
+require_once('include/head.php') ?>
 
 <body>
 
@@ -8,14 +10,21 @@
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <h1>Se connecter</h1>
-
         <hr>
+        <?php 
+
+          if (isset($_GET['erreur'])) {
+            afficherErreur("<strong>Identifient</strong> ou <strong>mot de passe</strong> incorrect !");
+          }
+
+        ?>
       </div>
     </div>
 
     <form class="form-group" action="login.php" method="post">
 
       <div class="row">
+
         <div class="col-md-3"></div>
         <div class="col-md-6">
           <label for="id">Identifients :</label>
@@ -43,5 +52,7 @@
   </div>
 
 </body>
+
+<?php require_once('include/footer.php'); ?>
 
 </html>
