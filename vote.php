@@ -7,7 +7,7 @@ if (!estConnecte() OR $_SESSION['role'] != "etudiant") {
     exit;
 }
 
-$voteFile = $fichiersVote."vote-".$_SESSION['id'];
+$voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv";
 $notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait");
 
 
