@@ -1,9 +1,7 @@
 <?php 
-require_once('config.php');
-require_once($fichiersInclude.'head.php')
+  require_once('config.php');
+  require_once($fichiersInclude.'head.php')
 ?>
-
-
 
   <div id="container" class="container mt-5">
 
@@ -14,7 +12,7 @@ require_once($fichiersInclude.'head.php')
         <hr>
         <?php 
           if (isset($_GET['erreur'])) {
-            afficherErreur("<strong>Identifient</strong> ou <strong>mot de passe</strong> incorrect !");
+            afficherErreur("<strong>Identifiant</strong> ou <strong>mot de passe</strong> incorrect !");
           }
         ?>
       </div>

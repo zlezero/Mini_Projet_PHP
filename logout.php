@@ -1,7 +1,13 @@
 <?php
-require_once("config.php");
-$_SESSION = array();
-session_destroy();
-header('Location: index.php');
-exit;
+
+    require_once("config.php");
+
+    #On détruit la session
+    $_SESSION = array();
+    session_destroy();
+
+    #On redirige vers la page d'accueil
+    header('Location: index.php');
+    exit;
+
 ?>
