@@ -21,8 +21,8 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
             $pointeur = fopen($voteFile, "w"); #On ouvre alors le fichier en écriture
             
             foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières on écrit l'ue puis le vote associé
-                
-                $notation = array($ue, explode("-", $_POST[$ue])[1]);
+                $array = explode("-", $_POST[$ue]);
+                $notation = array($ue, $array[1]);
                 fputcsv($pointeur, $notation); 
     
             }
@@ -98,43 +98,31 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
 
     ?>
     
-    <div class="row">
-
-        <div class="col-md-3"></div>
-
-        <div class="col-md-6">
-            <h1>Votre vote - Etudiant <?php echo $_SESSION['id']; ?></h1>
-        </div>
-
-        <fieldset>   
-
-    
-
-    <?php
+    <div class="jumbotron">
+        <h1 class="display-4">
+            Votre vote - Etudiant <?php echo $_SESSION['id']; ?>
+        </h1>
+        <p class='lead'>
+            <table cellpadding='20'>
+<?php
 
     if (file_exists($voteFile)) { #On vérifie si le fichier existe bien
-
         $pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
-
         while ( ($data = fgetcsv($pointeur)) !== FALSE) { #On affiche toutes les données du fichier
-            echo "<legend>".$listeUE[$data[0]]."</legend> : ".$data[1]."/5";
+            echo "<tr><td><b>".$listeUE[$data[0]]."</b></td><td>".$data[1]."/5</td></tr>";
         }
-
         fclose($pointeur);
-
     }
 
-    echo "</fieldset></div>";
-
-}
+}// else
 
 ?>
-
-<form class="form-group" action="logout.php" method="post">
-    <button type="submit" class="btn btn-danger">Se déconnecter</button>
-</form>
-
-</div>
+            </table>
+        </p>
+        <form class="form-group" action="logout.php" method="post">
+            <button type="submit" class="btn btn-danger">Se déconnecter</button>
+        </form>
+    </div>
 
 <?php
 require_once($fichiersInclude.'footer.php'); 
