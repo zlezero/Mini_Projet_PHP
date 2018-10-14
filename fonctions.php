@@ -20,6 +20,21 @@
         <?php
     }
     
+    function afficherSucces($message) {
+        ?>
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            <span class="text-success align-middle">
+                <i class="fa fa-close"></i><strong> Succès :</strong> <?php echo $message; ?>
+            </span>
+
+        <?php
+    }
+
     function estConnecte() {
         
         $roles = array("admin", "etudiant", "professeur");

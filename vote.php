@@ -52,7 +52,7 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
                 <fieldset>
 
                     <legend><?php echo $matieres ?></legend>
-
+                    <label class="radio-inline">
                     <p>
                         Sélectionnez l'appréciation souhaitée :
 
@@ -65,7 +65,8 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
                         ?>
 
                     </p>
-                                
+                    </label>
+
                 </fieldset>
 
                 <hr>
@@ -102,7 +103,7 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
         <div class="col-md-3"></div>
 
         <div class="col-md-6">
-            <h1>Votre vote</h1>
+            <h1>Votre vote - Etudiant <?php echo $_SESSION['id']; ?></h1>
         </div>
 
         <fieldset>   
