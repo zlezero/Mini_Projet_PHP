@@ -1,41 +1,45 @@
 <?php
+
 require_once("config.php");
 require_once($fichiersInclude.'head.php');
 
-if (!estConnecte() OR $_SESSION['role'] != "etudiant") {
-    header('Location: index.php');
+if (!estConnecte() OR $_SESSION['role'] != "etudiant") { #Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un étudiant
+    header('Location: index.php'); #On redirige vers la page de connexion
     exit;
 }
 
-$voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv";
-$notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait");
+$voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv"; #On définit le format du fichier de vote
+$notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait"); #Les différentes propositions de vote
 
 
-if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && isset($_POST['ue4']) && isset($_POST['ue5'])) {
+if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && isset($_POST['ue4']) && isset($_POST['ue5'])) { #On vérifie la validité du formulaire
 
-
-    if (!file_exists($voteFile)) {
-
-        $pointeur = fopen($voteFile, "w");
+    if (!empty($_POST['ue1']) AND !empty($_POST['ue2']) AND !empty($_POST['ue3']) AND !empty($_POST['ue4']) AND !empty($_POST['ue5'])) {
         
-        foreach($listeMatieres as $matieres => $ue) {
-            
-            $notation = array($ue, explode("-", $_POST[$ue])[1]);
-            fputcsv($pointeur, $notation); 
+        if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas
 
+            $pointeur = fopen($voteFile, "w"); #On ouvre alors le fichier en écriture
+            
+            foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières on écrit l'ue puis le vote associé
+                
+                $notation = array($ue, explode("-", $_POST[$ue])[1]);
+                fputcsv($pointeur, $notation); 
+    
+            }
+    
+            fclose($pointeur); #On ferme le fichier
+            
         }
 
-        fclose($pointeur);
-        
     }
 
 }
 
-if (!file_exists($voteFile)) {
+if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
 
     echo '<form class="form-group" action="" method="post">';
     
-    foreach($listeMatieres as $matieres => $ue) {
+    foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières différentes on affiche un formulaire différent
 
         ?>
 
@@ -89,7 +93,7 @@ if (!file_exists($voteFile)) {
    
 
 }
-else {
+else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vote
 
     ?>
     
@@ -106,13 +110,16 @@ else {
     
 
     <?php
-    if (file_exists($voteFile)) {
 
-        $pointeur = fopen($voteFile, "r");
+    if (file_exists($voteFile)) { #On vérifie si le fichier existe bien
 
-        while ( ($data = fgetcsv($pointeur)) !== FALSE) {
+        $pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
+
+        while ( ($data = fgetcsv($pointeur)) !== FALSE) { #On affiche toutes les données du fichier
             echo "<legend>".$listeUE[$data[0]]."</legend> : ".$data[1]."/5";
         }
+
+        fclose($pointeur);
 
     }
 

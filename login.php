@@ -1,8 +1,13 @@
 <?php
+
 require_once('config.php');
-if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && empty($_POST['pwd'])) ) {
+
+if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && empty($_POST['pwd'])) ) { #On vérifie la validité du formulaire
+
     foreach($listeFichiers as $fichier) {
+
         if (file_exists($fichier)) {
+
             $pointeur = fopen($fichier, "r");
             while ( ($data = fgetcsv($pointeur)) !== FALSE) {
                 
@@ -27,14 +32,38 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                 }
                 
             }
+
             fclose($pointeur);
+
         }
     }
+
+    #Si le login/mdp n'est pas présent dans les fichiers
     header('Location: index.php?erreur='.sha1("C'est une erreur !"));
     exit;
 }
-else {
+else { #Si l'envoi du formulaire est incorrect ou que l'on accède à la page d'une autre façon
+
+    if (estConnecte()) { #Si on est déjà connecté lorsque on accède à la page
+
+        if ($_SESSION['role'] == "admin") { #Si il s'agit d'un admin
+            header('Location: admin.php');
+            exit;
+        }
+        else if ($_SESSION['role'] == "etudiant") { #Si il s'agit d'un étudiant
+            header('Location: vote.php');
+            exit;
+        }
+        else if ($_SESSION['role'] == "professeur") { #Sinon il s'agit d'un prof
+            header('Location: prof.php');
+            exit;
+        }
+
+    }
+    
+    #Sinon on renvoie à la page de connexion
     header('Location: index.php?erreur='.sha1("C'est une erreur !"));
     exit;
+
 }
 ?>
