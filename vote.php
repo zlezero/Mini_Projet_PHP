@@ -11,7 +11,7 @@ if (!estConnecte() OR $_SESSION['role'] != "etudiant") { #Si on arrive sur cette
 $voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv"; #On définit le format du fichier de vote
 $notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait"); #Les différentes propositions de vote
 
-
+// écriture dans le fichier de vote
 if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && isset($_POST['ue4']) && isset($_POST['ue5'])) { #On vérifie la validité du formulaire
 
     if (!empty($_POST['ue1']) AND !empty($_POST['ue2']) AND !empty($_POST['ue3']) AND !empty($_POST['ue4']) AND !empty($_POST['ue5'])) {
@@ -35,60 +35,47 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
 
 }
 
+// vote de l'étudiant
 if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
+?>
+    <div class="jumbotron">
+        <p class="lead">Sélectionnez l'appréciation souhaitée pour chaque matière</p>
+        <form class="form-group" action="" method="post">
+            <table cellpadding="20">
+                <tr>
+                    <td><h5 class="display-7">Matières</h5></td>
+                    <td><h5 class="display-7">Très mécontent</h5></td>
+                    <td><h5 class="display-7">Mécontent</h5></td>
+                    <td><h5 class="display-7">Moyen</h5></td>
+                    <td><h5 class="display-7">Satisfait</h5></td>
+                    <td><h5 class="display-7">Très satisfait</h5></td>
+                </tr>
+<?php  
 
-    echo '<form class="form-group" action="" method="post">';
-    
     foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières différentes on affiche un formulaire différent
-
-        ?>
-
-        <div class="row">
-
-            <div class="col-md-3"></div>
-
-            <div class="col-md-6">
-
-                <fieldset>
-
-                    <legend><?php echo $matieres ?></legend>
-                    <label class="radio-inline">
-                    <p>
-                        Sélectionnez l'appréciation souhaitée :
-
-                        <?php 
-                        
-                            foreach($notes as $note => $description) {
-                                echo '<input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" /> <label for="'.$ue.'-'.$note.'">'.$description.'</label>';
-                            }
-                        
-                        ?>
-
-                    </p>
-                    </label>
-
-                </fieldset>
-
-                <hr>
-
-            </div>
-
-        </div>
+?>
+                <tr>
+                <td><h4 class="display-6"><?php echo $matieres ?></h4></td>
+                <label class="radio-inline">
+                <?php 
+                    foreach($notes as $note => $description) {
+                        echo '<td><input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" /> <label for="'.$ue.'-'.$note.'"></label></td>';
+                    }
+                ?>
+                </tr>
+                </label>
     
-        <?php
+<?php
     }
-
-    ?>
-
-        <div class="row">
-
-            <div class="col-md-3"></div>
-
-            <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">Voter</button>
-            </div>
-    
-    </form>
+?>
+            </table>
+            <hr class="my-4">
+            <button type="submit" class="btn btn-primary">Voter</button>
+        </form>
+        <form class="form-group" action="logout.php" method="post">
+            <button type="submit" class="btn btn-danger" style="float: right;">Se déconnecter</button>
+        </form>
+    </div>   
 
     <?php
    
@@ -113,16 +100,15 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
         }
         fclose($pointeur);
     }
+    echo '            </table>
+        </p>        <form class="form-group" action="logout.php" method="post">
+            <button type="submit" class="btn btn-danger">Se déconnecter</button>
+        </form>
+    </div>';
 
 }// else
 
 ?>
-            </table>
-        </p>
-        <form class="form-group" action="logout.php" method="post">
-            <button type="submit" class="btn btn-danger">Se déconnecter</button>
-        </form>
-    </div>
 
 <?php
 require_once($fichiersInclude.'footer.php'); 
