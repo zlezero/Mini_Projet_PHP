@@ -12,7 +12,6 @@ if (!estConnecte() OR $_SESSION['role'] != "professeur") { #Si on arrive sur cet
 // qui est un chiffre, et qui correspond à son ue (ex : prof01 => ue 1)
 $ue_prof = intval(substr($_SESSION['id'], -1));
 $votes = array(0, 0, 0, 0, 0);// nombre de votes pour chaque catégories
-$notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait"); #Les différentes propositions de vote
 
 // on parcourt tous les fichiers de vote dans le répertoire 'votes'
 foreach (glob($fichiersVote."*.csv") as $filename) {
@@ -28,7 +27,7 @@ $somme = array_sum($votes);// on stocke cette valeur pour gagner du temps
 
 echo "<div class='jumbotron'>";
 echo '<h2 class="display-6">'.$_SESSION['id'].' - '. $listeUE['ue'.strval($ue_prof)] .'</h2>';
-echo "<p class='lead'>Total des votes pour votre matière</p>";
+echo "<p class='lead'>Total des votes pour votre matière : </p>";
 
 // AFFICHAGE DES VOTES
 
