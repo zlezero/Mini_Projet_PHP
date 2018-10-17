@@ -8,6 +8,55 @@ if (!estConnecte() OR $_SESSION['role'] != "professeur") { #Si on arrive sur cet
     exit;
 }
 
-require_once($fichiersInclude.'footer.php'); 
+// On définit l'ue du professeur, en prennant le dernier caractère de son login
+// qui est un chiffre, et qui correspond à son ue (ex : prof01 => ue 1)
+$ue_prof = intval(substr($_SESSION['id'], -1));
+$votes = array(0, 0, 0, 0, 0);// nombre de votes pour chaque catégories
+$notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait"); #Les différentes propositions de vote
+
+// on parcourt tous les fichiers de vote dans le répertoire 'votes'
+foreach (glob($fichiersVote."*.csv") as $filename) {
+    $f = file($filename);
+    // on ne récupère que la ligne concernant le professeur, ie son ue
+    // tout en explodant car le fichier est un csv
+    $ligne = explode(',', $f[$ue_prof - 1]);
+    $vote = intval($ligne[1]);// on ne prend que le vote; [0] : ue du professeur
+    $votes[$vote - 1] += 1;
+}
+$somme = array_sum($votes);// on stocke cette valeur pour gagner du temps
+
+
+echo "<div class='jumbotron'>";
+echo '<h2 class="display-6">'.$_SESSION['id'].' - '. $listeUE['ue'.strval($ue_prof)] .'</h2>';
+echo "<p class='lead'>Total des votes pour votre matière</p>";
+
+// AFFICHAGE DES VOTES
+
+
+
+echo "<table border='1' cellpadding='20'><tr>";
+// on affiche les critères de sélection ("très mécontent", etc.)
+foreach ($notes as $n) {
+    echo '<td><h4 class="display-6">' . $n . '</h4></td>';
+}
+echo '<td><h5 class="display-6">TOTAUX</h5></td></tr><tr>';
+// on affiche les votes
+foreach ($votes as $v) {
+    echo '<td><h6 class="display-6">' . $v . '</h6></td>';
+}
+echo '<td><h6 class="display-6">'. $somme .'</h6></td></tr><tr>';
+// et on affiche la proportion des votes
+foreach ($votes as $v) {
+    echo '<td><h6 class="display-6">' . 100 * round($v / $somme, 2) . ' %</h6></td>';
+}
 
 ?>
+        </tr>
+    </table>
+    <form class="form-group" action="logout.php" method="post">
+        <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
+    </form>
+
+</div><!-- jumbotron -->
+
+<?php require_once($fichiersInclude.'footer.php'); ?>
