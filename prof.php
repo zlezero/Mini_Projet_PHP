@@ -22,6 +22,7 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
     $vote = intval($ligne[1]);// on ne prend que le vote; [0] : ue du professeur
     $votes[$vote - 1] += 1;
 }
+
 $somme = array_sum($votes);// on stocke cette valeur pour gagner du temps
 
 

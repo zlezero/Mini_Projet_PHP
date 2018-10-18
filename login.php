@@ -45,20 +45,7 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
 else { #Si l'envoi du formulaire est incorrect ou que l'on accède à la page d'une autre façon
 
     if (estConnecte()) { #Si on est déjà connecté lorsque on accède à la page
-
-        if ($_SESSION['role'] == "admin") { #Si il s'agit d'un admin
-            header('Location: admin.php');
-            exit;
-        }
-        else if ($_SESSION['role'] == "etudiant") { #Si il s'agit d'un étudiant
-            header('Location: vote.php');
-            exit;
-        }
-        else if ($_SESSION['role'] == "professeur") { #Sinon il s'agit d'un prof
-            header('Location: prof.php');
-            exit;
-        }
-
+        redirigerBonnePage();
     }
     
     #Sinon on renvoie à la page de connexion

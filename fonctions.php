@@ -46,4 +46,29 @@
         }
         return FALSE;
     }
+
+    function redirigerBonnePage() {
+
+        if (estConnecte()) {
+
+            if ($_SESSION['role'] == "admin") { #Si il s'agit d'un admin
+                header('Location: admin.php');
+                exit;
+            }
+            else if ($_SESSION['role'] == "etudiant") { #Si il s'agit d'un étudiant
+                header('Location: vote.php');
+                exit;
+            }
+            else if ($_SESSION['role'] == "professeur") { #Sinon il s'agit d'un prof
+                header('Location: prof.php');
+                exit;
+            }
+
+        }
+        else {
+            header("Location: index.php");
+            exit;
+        }
+
+    }
 ?>
