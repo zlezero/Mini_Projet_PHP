@@ -14,6 +14,7 @@ if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && 
                 if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) {
                     
                     $_SESSION['id'] = $data[0];
+                    
                     if ($fichier == $listeFichiers[0]) { #Si il s'agit d'un admin
                         $_SESSION['role'] = "admin";
                         header('Location: admin.php');

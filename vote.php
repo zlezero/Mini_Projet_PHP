@@ -29,16 +29,27 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
             fclose($pointeur); #On ferme le fichier
             
         }
+        else {
+            $erreur = True;
+        }
 
     }
+    else {
+        $erreur = True;
+    }
 
+}
+else {
+    $erreur = True;
 }
 
 // vote de l'étudiant
 if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
 ?>
     <div class="jumbotron">
+
         <p class="lead">Sélectionnez l'appréciation souhaitée pour chaque matière</p>
+        <?php if (isset($erreur)) { afficherErreur("Votre formulaire est incomplet !"); } ?>
         <form class="form-group" action="" method="post">
             <table cellpadding="20">
                 <tr>
@@ -58,7 +69,7 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
                 <label class="radio-inline">
                 <?php 
                     foreach($notes as $note => $description) {
-                        echo '<td><input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" /> <label for="'.$ue.'-'.$note.'"></label></td>';
+                        echo '<td><input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" required /> <label for="'.$ue.'-'.$note.'"></label></td>';
                     }
                 ?>
                 </tr>
