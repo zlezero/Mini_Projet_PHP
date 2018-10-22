@@ -24,6 +24,7 @@
     </style>
 
 </head>
+
 <body>
     <nav id="navigation" class="navbar navbar-expand-lg navbar-light bg-light fixed-top justify-content-between navbar-toggleable-md">
         <div class="navbar-header">
@@ -31,7 +32,7 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <img src="images/uvsq.jpg" width="150px">
+                <a href="http://www.uvsq.fr"><img src="images/uvsq.jpg" width="150px"></a>
             </li>
         </ul>
     </nav>

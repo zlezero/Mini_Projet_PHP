@@ -1,6 +1,13 @@
 <?php 
-  require_once('config.php');
-  require_once($fichiersInclude.'head.php')
+  
+  require_once('config.php'); #On inclut la configuration
+
+  if (estConnecte()) { #Si l'utilisateur est déjà connecté
+    redirigerBonnePage(); #On le dirige à sa bonne page
+  }
+
+  require_once($fichiersInclude.'head.php') #On inclut l'entête
+
 ?>
 
   <div id="container" class="container mt-5">
@@ -11,7 +18,7 @@
         <h1>Se connecter</h1>
         <hr>
         <?php 
-          if (isset($_GET['erreur'])) {
+          if (isset($_GET['erreur'])) { #Si il y a eu une erreur on l'affiche
             afficherErreur("<strong>Identifiant</strong> ou <strong>mot de passe</strong> incorrect !");
           }
         ?>
@@ -50,4 +57,4 @@
 
 </body>
 
-<?php require_once($fichiersInclude.'footer.php'); ?>
+<?php require_once($fichiersInclude.'footer.php'); #On inclut le pied de page ?>
