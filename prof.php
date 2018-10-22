@@ -34,24 +34,25 @@ echo "<p class='lead'>Total des votes pour votre matière : </p>";
 
 
 
-echo "<table border='1' cellpadding='20'><tr>";
+echo "<table class='table'><thead><tr>";
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
-    echo '<td><h4 class="display-6">' . $n . '</h4></td>';
+    echo '<th scope="col">' . $n . '</th></td>';
 }
-echo '<td><h5 class="display-6">TOTAUX</h5></td></tr><tr>';
+echo '<th scope="col">TOTAUX</th></tr></thead><tbody><tr>';
 // on affiche les votes
 foreach ($votes as $v) {
-    echo '<td><h6 class="display-6">' . $v . '</h6></td>';
+    echo '<td>' . $v . '</td>';
 }
-echo '<td><h6 class="display-6">'. $somme .'</h6></td></tr><tr>';
+echo '<td>'. $somme .'</td></tr><tr>';
 // et on affiche la proportion des votes
 foreach ($votes as $v) {
-    echo '<td><h6 class="display-6">' . 100 * round($v / $somme, 2) . ' %</h6></td>';
+    echo '<td>' . 100 * round($v / $somme, 2) . ' %</td>';
 }
 
 ?>
-        </tr>
+            </tr>
+        </tbody>
     </table>
     <form class="form-group" action="logout.php" method="post">
         <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
