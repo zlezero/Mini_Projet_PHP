@@ -25,7 +25,13 @@ $tabNbVotes = array ("ue1" => 0,
 					"ue5" => 0,
 					"total" => 0);
 
-
+//Tableau des moyennes
+$tabMoyennes = array ("ue1" => 0,
+					"ue2" => 0,
+					"ue3" => 0,
+					"ue4" => 0,
+					"ue5" => 0) ;
+					
 // Parccours des fichiers de vote
 foreach (glob($fichiersVote."*.csv") as $filename) {
     $file = file($filename);
@@ -36,12 +42,21 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 		
 		$ue = $ligneVote[0] ;
 		$vote = $ligneVote[1] ;
+		//Ajout du vote au tableau des votes
 		$tabVoteUE[$ue][intval($vote)-1] +=1  ;
-		$tabNbVotes[$ue] +=1 ;
-		$tabNbVotes["total"] +=1 ;
 		
+		//Ajout au nombre de votes total et celui de l'ue
+		$tabNbVotes["total"] +=1 ;
+		$tabNbVotes[$ue] +=1 ;
+		
+		//Ajout à la moyenne
+		$tabMoyennes[$ue] += intval($vote) ;
 	}
-
+	
+	//Calcul des moyennes
+	foreach($tabMoyennes as $ue => $moyenne) {
+		$moyenne = $moyenne/$tabNbVotes[$ue] ;
+	}
 
 }
 
@@ -71,7 +86,7 @@ foreach ($listeUE as $UE => $matiere) {
 		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
 	}
 	
-	echo "</tr></table><br><br>" ;
+	echo "</tr></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5><br><br>" ;
 }
 ?>
  
