@@ -60,9 +60,11 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 
 }
 
+echo "<div class='jumbotron'>";
+
 //On affiche le tableau de votes pour chaque UE
 foreach ($listeUE as $UE => $matiere) {
-	echo "<div class='jumbotron'>";
+	
 	echo '<h2 class="display-6">'.$UE.'  '.$matiere.'</h2>';
 	echo "<p class='lead'>Total des votes pour cette matière</p>";
 
