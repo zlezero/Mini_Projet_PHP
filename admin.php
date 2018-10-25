@@ -68,14 +68,13 @@ foreach ($listeUE as $UE => $matiere) {
 	echo '<td><h6 class="display-6">'.$tabNbVotes[$UE].'</h6></td></tr><tr>';
 	// et on affiche la proportion des votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td><br><br>';
+		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
 	}
 	
-	echo "</table>" ;
+	echo "</tr></table><br><br>" ;
 }
 ?>
-        </tr>
-    </table>
+ 
     <form class="form-group" action="logout.php" method="post">
         <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
     </form>
