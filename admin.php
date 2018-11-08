@@ -32,6 +32,14 @@ $tabMoyennes = array ("ue1" => 0,
 					"ue4" => 0,
 					"ue5" => 0) ;
 					
+//Tableau des écarts-types
+$tabET = array ("ue1" => 0,
+				"ue2" => 0,
+				"ue3" => 0,
+				"ue4" => 0,
+				"ue5" => 0) ;
+					
+					
 // Parccours des fichiers de vote
 foreach (glob($fichiersVote."*.csv") as $filename) {
     $file = file($filename);
@@ -48,16 +56,25 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 		//Ajout au nombre de votes total et celui de l'ue
 		$tabNbVotes["total"] +=1 ;
 		$tabNbVotes[$ue] +=1 ;
-		
+	
 		//Ajout à la moyenne
 		$tabMoyennes[$ue] += intval($vote) ;
 	}
-	
-	//Calcul des moyennes
-	foreach($tabMoyennes as $ue => $moyenne) {
-		$moyenne = $moyenne/$tabNbVotes[$ue] ;
-	}
 
+}
+
+//Calcul des moyennes
+foreach($tabMoyennes as $ue => $moyenne) {
+	$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
+}
+
+//Calcul des écarts-types
+foreach ($tabET as $ue => $val) {
+	foreach ($tabVoteUE[$ue] as $vote => $nb) {
+		$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
+	}
+	$val = $val/$tabNbVotes[$ue] ;
+	$tabET[$ue] = sqrt($val) ;
 }
 
 echo "<div class='jumbotron'>";
@@ -88,7 +105,8 @@ foreach ($listeUE as $UE => $matiere) {
 		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
 	}
 	
-	echo "</tr></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5><br><br>" ;
+	echo "</tr></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5>" ;
+	echo "<h5>Ecart-type : ".$tabET[$UE]."</h5><br><br>" ;
 }
 ?>
  
