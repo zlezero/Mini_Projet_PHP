@@ -82,7 +82,7 @@ echo "<div class='jumbotron'>";
 //On affiche le tableau de votes pour chaque UE
 foreach ($listeUE as $UE => $matiere) {
 	
-	echo '<h2 class="display-6">'.$UE.'  '.$matiere.'</h2>';
+	echo '<h2 class="display-6">'.$UE.'  -  '.$matiere.'</h2>';
 	echo "<p class='lead'>Total des votes pour cette matière</p>";
 
 	// AFFICHAGE DES VOTES
@@ -92,7 +92,7 @@ foreach ($listeUE as $UE => $matiere) {
 	foreach ($notes as $n) {
 		echo '<td><h4 class="display-6">' . $n . '</h4></td>';
 	}
-	echo '<td><h5 class="display-6">TOTAUX</h5></td></tr><tr>';
+	echo '<th scope="col">TOTAUX</th></tr></thead><tbody><tr>';
 	
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
@@ -105,15 +105,20 @@ foreach ($listeUE as $UE => $matiere) {
 		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
 	}
 	
-	echo "</tr></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5>" ;
+	echo "</tr></tbody></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5>" ;
 	echo "<h5>Ecart-type : ".$tabET[$UE]."</h5><br><br>" ;
 }
 ?>
+	
  
     <form class="form-group" action="logout.php" method="post">
         <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
     </form>
-
+	
+	<form class="form-group" action="creationPDF.php" method="post">
+		<button type="submit" class="btn btn-pdf" style="margin:20px;">Format PDF</button>
+	</form>
+	
 </div><!-- jumbotron -->
 
 <?php
