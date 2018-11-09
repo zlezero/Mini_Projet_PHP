@@ -105,8 +105,9 @@ foreach ($listeUE as $UE => $matiere) {
 		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
 	}
 	
-	echo "</tr></tbody></table><br><h5>Moyenne : ".$tabMoyennes[$UE]."</h5>" ;
-	echo "<h5>Ecart-type : ".$tabET[$UE]."</h5><br><br>" ;
+	//Affichage de la moyenne et de l'écart-type
+	echo "</tr></tbody></table><br><h5>Moyenne : ".round($tabMoyennes[$UE],2)."</h5>" ;
+	echo "<h5>Ecart-type : ".round($tabET[$UE],2)."</h5><br><br>" ;
 }
 ?>
 	
