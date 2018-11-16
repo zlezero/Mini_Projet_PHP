@@ -21,6 +21,9 @@
         body { 
             padding-top: 65px; 
         }
+        .texte-centre {
+            text-align: center;
+        }
     </style>
 
 </head>
