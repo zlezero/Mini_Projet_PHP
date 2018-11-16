@@ -8,8 +8,6 @@ if (!estConnecte() OR $_SESSION['role'] != "admin") { #Si on arrive sur cette pa
     exit;
 }
 
-$notes = array("1" => "Très mécontent", "2" => "Mécontent", "3" => "Moyen", "4" => "Satisfait", "5" => "Très satisfait"); #Les différentes propositions de vote
-
 //Tableau qui va contenir les différentes UE et les notes correspondantes
 $tabVoteUE = array( "ue1" => array(0, 0, 0, 0, 0),
 					"ue2" => array(0, 0, 0, 0, 0),
@@ -61,54 +59,56 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 		$tabMoyennes[$ue] += intval($vote) ;
 	}
 
-}
 
-//Calcul des moyennes
-foreach($tabMoyennes as $ue => $moyenne) {
-	$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
-}
-
-//Calcul des écarts-types
-foreach ($tabET as $ue => $val) {
-	foreach ($tabVoteUE[$ue] as $vote => $nb) {
-		$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
+	//Calcul des moyennes
+	foreach($tabMoyennes as $ue => $moyenne) {
+		$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
 	}
-	$val = $val/$tabNbVotes[$ue] ;
-	$tabET[$ue] = sqrt($val) ;
+
+	//Calcul des écarts-types
+	foreach ($tabET as $ue => $val) {
+		foreach ($tabVoteUE[$ue] as $vote => $nb) {
+			$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
+		}
+		$val = $val/$tabNbVotes[$ue] ;
+		$tabET[$ue] = sqrt($val) ;
+	}
 }
 
 echo "<div class='jumbotron'>";
 
+
+//AFFICHAGE DES EN-TETES DU TABLEAU
+echo "<table class='table'><tr><td></td>";
+// on affiche les critères de sélection ("très mécontent", etc.)
+foreach ($notes as $n) {
+	echo '<td><h4 class="display-6">' . $n . '</h4></td>';
+}
+echo "<td><h4>Totaux</h4></td><td><h4>Moyenne</h4></td><td><h4>Ecart-type</h4></td></tr></thead><tbody><tr>";
+
+
+
 //On affiche le tableau de votes pour chaque UE
 foreach ($listeUE as $UE => $matiere) {
 	
-	echo '<h2 class="display-6">'.$UE.'  -  '.$matiere.'</h2>';
-	echo "<p class='lead'>Total des votes pour cette matière</p>";
+	echo '<th>'.$UE.'  -  '.$matiere.'</th>';
 
-	// AFFICHAGE DES VOTES
 
-	echo "<table border='1' cellpadding='20'><tr>";
-	// on affiche les critères de sélection ("très mécontent", etc.)
-	foreach ($notes as $n) {
-		echo '<td><h4 class="display-6">' . $n . '</h4></td>';
-	}
-	echo '<th scope="col">TOTAUX</th></tr></thead><tbody><tr>';
-	
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td><h6 class="display-6">' . $nbVotes . '</h6></td>';
+		echo '<td><h5>' . $nbVotes . '</h5> soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</td>';
 	}
 	
-	echo '<td><h6 class="display-6">'.$tabNbVotes[$UE].'</h6></td></tr><tr>';
-	// et on affiche la proportion des votes
-	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td><h6 class="display-6">' . 100 * round($nbVotes / $tabNbVotes[$UE], 2) . ' %</h6></td>';
-	}
+	//Affichage du total
+	echo '<td><h5 class="texte-centre">'.$tabNbVotes[$UE].'</h5></td>';
 	
 	//Affichage de la moyenne et de l'écart-type
-	echo "</tr></tbody></table><br><h5>Moyenne : ".round($tabMoyennes[$UE],2)."</h5>" ;
-	echo "<h5>Ecart-type : ".round($tabET[$UE],2)."</h5><br><br>" ;
+	echo '<td><h5 class="texte-centre">'.round($tabMoyennes[$UE],2).'</h5></td>' ;
+	echo '<td><h5 class="texte-centre">'.round($tabET[$UE],2).'</h5></td></tr><tr>';
+
 }
+
+echo "</tr></tbody></table>";
 ?>
 	
  

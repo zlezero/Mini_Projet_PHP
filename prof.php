@@ -37,17 +37,17 @@ echo "<p class='lead'>Total des votes pour votre matière : </p>";
 echo "<table class='table'><thead><tr>";
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
-    echo '<th scope="col">' . $n . '</th></td>';
+    echo '<th scope="col"  class="texte-centre">' . $n . '</th></td>';
 }
-echo '<th scope="col">TOTAUX</th></tr></thead><tbody><tr>';
+echo '<th scope="col" class="texte-centre">TOTAUX</th></tr></thead><tbody><tr>';
 // on affiche les votes
 foreach ($votes as $v) {
-    echo '<td>' . $v . '</td>';
+    echo '<td class="texte-centre">' . $v . '</td>';
 }
-echo '<td>'. $somme .'</td></tr><tr>';
+echo '<td class="texte-centre">'. $somme .'</td></tr><tr>';
 // et on affiche la proportion des votes
 foreach ($votes as $v) {
-    echo '<td>' . 100 * round($v / $somme, 2) . ' %</td>';
+    echo '<td class="texte-centre">' . 100 * round($v / $somme, 2) . ' %</td>';
 }
 
 ?>
