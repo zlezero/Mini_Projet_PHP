@@ -39,27 +39,26 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
     }
 
 }
-else {
-    $erreur = True;
-}
 
 // vote de l'étudiant
 if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
 ?>
     <div class="jumbotron">
 
-        <p class="lead">Sélectionnez l'appréciation souhaitée pour chaque matière</p>
+        <h3>Sélectionnez l'appréciation souhaitée pour chaque matière</h3>
         <?php if (isset($erreur)) { afficherErreur("Votre formulaire est incomplet !"); } ?>
         <form class="form-group" action="" method="post">
-            <table cellpadding="20">
-                <tr>
-                    <td><h5 class="display-7">Matières</h5></td>
-                    <td><h5 class="display-7">Très mécontent</h5></td>
-                    <td><h5 class="display-7">Mécontent</h5></td>
-                    <td><h5 class="display-7">Moyen</h5></td>
-                    <td><h5 class="display-7">Satisfait</h5></td>
-                    <td><h5 class="display-7">Très satisfait</h5></td>
+        <table class='table table-striped text-center'>
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col"><h4 class="display-6">Matières</h4></th>
+                    <th  scope="col"><h4 class="display-6">Très mécontent</h4></th>
+                    <th  scope="col"><h4 class="display-6">Mécontent</h4></th>
+                    <th  scope="col"><h4 class="display-6">Moyen</h4></th>
+                    <th  scope="col"><h4 class="display-6">Satisfait</h4></th>
+                    <th  scope="col"><h4 class="display-6">Très satisfait</h4></th>
                 </tr>
+            </thead>
 <?php  
 
     foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières différentes on affiche un formulaire différent
@@ -78,7 +77,7 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
 <?php
     }
 ?>
-            </table>
+        </table>
             <hr class="my-4">
             <button type="submit" class="btn btn-primary">Voter</button>
         </form>
@@ -98,27 +97,36 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
     <div class="jumbotron">
         <h1 class="display-4">
             Votre vote - Etudiant <?php echo $_SESSION['id']; ?>
-        </h1>
-        <p class='lead'>
-            <table cellpadding='20'>
+        </h1><br>
+        
+        <table class='table table-striped text-center' style="margin:0 auto;width:50%" >
+            <thead>
+                <tr>
+                    <th class="table-dark" scope="col">Matières</th>
+                    <th  class="table-dark" scope="col">Notes</th>
+                </tr>
+            </thead>
 <?php
 
     if (file_exists($voteFile)) { #On vérifie si le fichier existe bien
         $pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
         while ( ($data = fgetcsv($pointeur)) !== FALSE) { #On affiche toutes les données du fichier
-            echo "<tr><td><b>".$listeUE[$data[0]]."</b></td><td>".$data[1]."/5</td></tr>";
+            echo "<tr><td>".$listeUE[$data[0]]."</td><td>".$data[1]."/5</td></tr>";
         }
         fclose($pointeur);
     }
-    echo '            </table>
-        </p>        <form class="form-group" action="logout.php" method="post">
-            <button type="submit" class="btn btn-danger">Se déconnecter</button>
+    echo '</table><br><br>
+        <form class="form-group" action="logout.php" method="post">
+            <button type="submit" class="btn btn-danger" style="float: right;">Se déconnecter</button>
         </form>
     </div>';
 
 }// else
 
 ?>
+
+
+
 
 <?php
 require_once($fichiersInclude.'footer.php'); 
