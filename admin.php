@@ -79,7 +79,7 @@ echo "<div class='jumbotron'><div class='texte-centre'>";
 
 
 //AFFICHAGE DES EN-TETES DU TABLEAU
-echo "<table class='table table-striped'><tr><thead class='thead-dark'><th scope='col'></th>";
+echo "<table class='table table-striped'><thead class='thead-dark'><th scope='col'></th>";
 
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
@@ -97,9 +97,7 @@ foreach ($listeUE as $UE => $matiere) {
 
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-
 		echo '<td>' . $nbVotes . '<br /><font size="2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</font></td>';
-
 	}
 	
 	//Affichage du total
