@@ -21,6 +21,9 @@
         body { 
             padding-top: 65px; 
         }
+        .texte-centre {
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -32,7 +35,7 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="http://www.uvsq.fr"><img src="images/uvsq.jpg" width="150px"></a>
+                <a href="http://www.uvsq.fr"><img src="images/uvsq.jpg" width="150px" alt="Logo de l'UVSQ"></a>
             </li>
         </ul>
     </nav>
