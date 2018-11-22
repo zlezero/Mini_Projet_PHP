@@ -103,20 +103,21 @@
 	
 	
 	$pdf ->SetFont('Times','B',11); //choix de la police
+	$pdf -> SetFillColor('150','150','150') ; // Choix de la couleur de remplissage
 	//Affichage du tableau :
 	foreach($notes as $num => $note) {
 		$pdf ->setXY(70+intval($num)*80,140) ;
-		$pdf -> Cell(80,40, utf8_decode($note),1,0, 'C') ;
+		$pdf -> Cell(80,40, utf8_decode($note),1,0, 'C',true) ;
 	}
-	$pdf -> Cell(80,40, utf8_decode("Total"),1,0, 'C') ;
-	$pdf -> Cell(80,40, utf8_decode("Moyenne"),1,0, 'C') ;
-	$pdf -> Cell(80,40, utf8_decode("Ecart-type"),1,0, 'C') ;
+	$pdf -> Cell(80,40, utf8_decode("Total"),1,0, 'C',true) ;
+	$pdf -> Cell(80,40, utf8_decode("Moyenne"),1,0, 'C',true) ;
+	$pdf -> Cell(80,40, utf8_decode("Ecart-type"),1,0, 'C',true) ;
 	
 	
 	//Affichage de la colonne des matières
 	$pdf ->setXY(40,180) ;
 	foreach($listeUE as $ue => $matiere) {
-		$pdf -> Cell(110,60, utf8_decode($ue.' - '.$matiere),1,2, 'C') ;
+		$pdf -> Cell(110,60, utf8_decode($ue.' - '.$matiere),1,2, 'C', true) ;
 	}
 	
 	
@@ -143,9 +144,11 @@
 	$pdf ->Write(0,date('j/n/Y')) ;
 	
 	//Footer
-	$pdf ->setXY(280,530) ;
+	$pdf ->setXY(275,520) ;
 	$pdf ->Write(0,utf8_decode("IUT de Vélizy - Année 2018-2019 - Département informatique")) ;
-	
+	$pdf ->setXY(250,535) ;
+	$pdf ->SetFont('Times','',8); //choix de la police
+	$pdf ->Write(0,utf8_decode("LEVESQUE Yanis - VATHONNE Thomas - REPAIN Paul - HARDY Raphaël - PREVOT Carmen")) ;
 	$pdf ->Output(); //génère le PDF et l'affiche	
 
 ?>

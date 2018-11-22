@@ -97,7 +97,9 @@ foreach ($listeUE as $UE => $matiere) {
 
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td>' . $nbVotes . ' soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</td>';
+
+		echo '<td>' . $nbVotes . '<br /><font size="2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</font></td>';
+
 	}
 	
 	//Affichage du total
