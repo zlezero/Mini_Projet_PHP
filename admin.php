@@ -75,16 +75,17 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 	}
 }
 
-echo "<div class='jumbotron'>";
+echo "<div class='jumbotron'><div class='texte-centre'>";
 
 
 //AFFICHAGE DES EN-TETES DU TABLEAU
-echo "<table class='table'><tr><td></td>";
+echo "<table class='table table-striped'><tr><thead class='thead-dark'><th scope='col'></th>";
+
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
-	echo '<td><h4 class="display-6">' . $n . '</h4></td>';
+	echo '<th scope="col">' . $n . '</th>';
 }
-echo "<td><h4>Totaux</h4></td><td><h4>Moyenne</h4></td><td><h4>Ecart-type</h4></td></tr></thead><tbody><tr>";
+echo "<th scope='col'>Totaux</th><th scope='col'>Moyenne</th><th scope='col'>Ecart-type</th></tr></thead><tbody><tr>";
 
 
 
@@ -96,33 +97,37 @@ foreach ($listeUE as $UE => $matiere) {
 
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td><h5>' . $nbVotes . '</h5> soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</td>';
+		echo '<td>' . $nbVotes . '<br /><font size="2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</font></td>';
 	}
 	
 	//Affichage du total
-	echo '<td><h5 class="texte-centre">'.$tabNbVotes[$UE].'</h5></td>';
+	echo '<td>'.$tabNbVotes[$UE].'</td>';
 	
 	//Affichage de la moyenne et de l'écart-type
-	echo '<td><h5 class="texte-centre">'.round($tabMoyennes[$UE],2).'</h5></td>' ;
-	echo '<td><h5 class="texte-centre">'.round($tabET[$UE],2).'</h5></td></tr><tr>';
+	echo '<td>'.round($tabMoyennes[$UE],2).'</td>' ;
+	echo '<td>'.round($tabET[$UE],2).'</td></tr><tr>';
 
 }
 
-echo "</tr></tbody></table>";
+echo "</tr></tbody></table></div>";
 ?>
+	<table>
+		<tr>
+			<td>
+				<form class="form-group" action="creationPDF.php" method="post">
+					<button type="submit" class="btn btn-info">Générer le PDF</button>
+				</form>
+			</td>
+			<td>
+				<form class="form-group" action="logout.php" method="post">
+					<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
+				</form>
+			</td>
+		</tr>
+    </table>
 	
- 
-    <form class="form-group" action="logout.php" method="post">
-        <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
-    </form>
-	
-	<form class="form-group" action="creationPDF.php" method="post">
-		<button type="submit" class="btn btn-pdf" style="margin:20px;">Format PDF</button>
-	</form>
-	
-</div><!-- jumbotron -->
+</div> <!-- Jumbotron -->
 
 <?php
 require_once($fichiersInclude.'footer.php'); 
-
 ?>
