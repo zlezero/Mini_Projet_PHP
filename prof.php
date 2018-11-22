@@ -39,7 +39,7 @@ echo "<table class='table text-center table-striped'><thead class='thead-dark'><
 foreach ($notes as $n) {
     echo '<th scope="col">' . $n . '</th></td>';
 }
-echo '<th scope="col">TOTAUX</th></tr></thead><tbody><tr>';
+echo '<th scope="col">TOTAL</th></tr></thead><tbody><tr>';
 // on affiche les votes
 foreach ($votes as $v) {
     echo '<td>' . $v . '</td>';

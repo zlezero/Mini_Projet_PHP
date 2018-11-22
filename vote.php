@@ -48,15 +48,15 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
         <h3>Sélectionnez l'appréciation souhaitée pour chaque matière</h3>
         <?php if (isset($erreur)) { afficherErreur("Votre formulaire est incomplet !"); } ?>
         <form class="form-group" action="" method="post">
-        <table class='table table-striped text-center'>
-            <thead>
+        <table class='table table-striped'>
+			<thead class='thead-dark'>
                 <tr class="table-primary">
-                    <th scope="col"><h4 class="display-6">Matières</h4></th>
-                    <th  scope="col"><h4 class="display-6">Très mécontent</h4></th>
-                    <th  scope="col"><h4 class="display-6">Mécontent</h4></th>
-                    <th  scope="col"><h4 class="display-6">Moyen</h4></th>
-                    <th  scope="col"><h4 class="display-6">Satisfait</h4></th>
-                    <th  scope="col"><h4 class="display-6">Très satisfait</h4></th>
+                    <th scope="col">Matières</th>
+                    <th  scope="col">Très mécontent</th>
+                    <th  scope="col">Mécontent</th>
+                    <th  scope="col">Moyen</th>
+                    <th  scope="col">Satisfait</th>
+                    <th  scope="col">Très satisfait</th>
                 </tr>
             </thead>
 <?php  
@@ -64,7 +64,7 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
     foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières différentes on affiche un formulaire différent
 ?>
                 <tr>
-                <td><h4 class="display-6"><?php echo $matieres ?></h4></td>
+                <td><h5 class="display-6"><?php echo $matieres ?></h5></td>
                 <label class="radio-inline">
                 <?php 
                     foreach($notes as $note => $description) {
@@ -78,12 +78,20 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
     }
 ?>
         </table>
-            <hr class="my-4">
-            <button type="submit" class="btn btn-primary">Voter</button>
-        </form>
-        <form class="form-group" action="logout.php" method="post">
-            <button type="submit" class="btn btn-danger" style="float: right;">Se déconnecter</button>
-        </form>
+		<table>
+			<tr>
+				<td>
+					<button type="submit" class="btn btn-primary">Voter</button>
+					
+				</td>
+				<td>
+					<form class="form-group" action="logout.php" method="post">
+						<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+		</form>
     </div>   
 
     <?php
@@ -117,17 +125,12 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
     }
     echo '</table><br><br>
         <form class="form-group" action="logout.php" method="post">
-            <button type="submit" class="btn btn-danger" style="float: right;">Se déconnecter</button>
+            <button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
         </form>
     </div>';
 
 }// else
 
-?>
 
-
-
-
-<?php
 require_once($fichiersInclude.'footer.php'); 
 ?>

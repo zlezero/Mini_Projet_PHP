@@ -67,21 +67,22 @@
 		}
 
 
-		//Calcul des moyennes
-		foreach($tabMoyennes as $ue => $moyenne) {
-			$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
-		}
-
-		//Calcul des écarts-types
-		foreach ($tabET as $ue => $val) {
-			foreach ($tabVoteUE[$ue] as $vote => $nb) {
-				$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
-			}
-			$val = $val/$tabNbVotes[$ue] ;
-			$tabET[$ue] = sqrt($val) ;
-		}
-	}
 		
+	}
+	//Calcul des moyennes
+	foreach($tabMoyennes as $ue => $moyenne) {
+		$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
+	}
+
+	//Calcul des écarts-types
+	foreach ($tabET as $ue => $val) {
+		foreach ($tabVoteUE[$ue] as $vote => $nb) {
+			$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
+		}
+		$val = $val/$tabNbVotes[$ue] ;
+		$tabET[$ue] = sqrt($val) ;
+	}
+	
 
 	$pdf = new FPDF("L","pt","A4"); 
 	//création d'une instance de classe:
@@ -133,8 +134,8 @@
 		}
 		
 		$pdf -> Cell(80,60, utf8_decode($tabNbVotes[$UE]),1,0, 'C') ;
-		$pdf -> Cell(80,60, utf8_decode($tabMoyennes[$UE]),1,0, 'C') ;
-		$pdf -> Cell(80,60, utf8_decode($tabET[$UE]),1,0, 'C') ;
+		$pdf -> Cell(80,60, utf8_decode(round($tabMoyennes[$UE],2)),1,0, 'C') ;
+		$pdf -> Cell(80,60, utf8_decode(round($tabET[$UE],2)),1,0, 'C') ;
 		
 		$cptr++ ;
 	}
