@@ -96,7 +96,7 @@ foreach ($listeUE as $UE => $matiere) {
 
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td>' . $nbVotes . '<br /><font size="2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</font></td>';
+		echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</div></td>';
 	}
 	
 	//Affichage du total
@@ -104,11 +104,11 @@ foreach ($listeUE as $UE => $matiere) {
 	
 	//Affichage de la moyenne et de l'écart-type
 	echo '<td>'.round($tabMoyennes[$UE],2).'</td>' ;
-	echo '<td>'.round($tabET[$UE],2).'</td></tr><tr>';
+	echo '<td>'.round($tabET[$UE],2).'</td></tr>';
 
 }
 
-echo "</tr></tbody></table></div>";
+echo "</tbody></table></div>";
 ?>
 	<table>
 		<tr>
