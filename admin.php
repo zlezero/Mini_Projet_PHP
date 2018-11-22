@@ -54,25 +54,24 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
 		//Ajout au nombre de votes total et celui de l'ue
 		$tabNbVotes["total"] +=1 ;
 		$tabNbVotes[$ue] +=1 ;
-	
+		
 		//Ajout à la moyenne
 		$tabMoyennes[$ue] += intval($vote) ;
 	}
+}
 
+//Calcul des moyennes
+foreach($tabMoyennes as $ue => $moyenne) {
+	$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
+}
 
-	//Calcul des moyennes
-	foreach($tabMoyennes as $ue => $moyenne) {
-		$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
+//Calcul des écarts-types
+foreach ($tabET as $ue => $val) {
+	foreach ($tabVoteUE[$ue] as $vote => $nb) {
+		$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
 	}
-
-	//Calcul des écarts-types
-	foreach ($tabET as $ue => $val) {
-		foreach ($tabVoteUE[$ue] as $vote => $nb) {
-			$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
-		}
-		$val = $val/$tabNbVotes[$ue] ;
-		$tabET[$ue] = sqrt($val) ;
-	}
+	$val = $val/$tabNbVotes[$ue] ;
+	$tabET[$ue] = sqrt($val) ;
 }
 
 echo "<div class='jumbotron'><div class='texte-centre'>";
