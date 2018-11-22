@@ -37,7 +37,7 @@ echo "<p class='lead'>Total des votes pour votre matière : </p>";
 echo "<table class='table text-center table-striped'><thead class='thead-dark'><tr class='table-primary'>";
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
-    echo '<th scope="col">' . $n . '</th></td>';
+    echo '<th scope="col">' . $n . '</th>';
 }
 echo '<th scope="col">TOTAL</th></tr></thead><tbody><tr>';
 // on affiche les votes

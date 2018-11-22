@@ -77,20 +77,13 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
 	}
 ?>
 		</table>
-		<table>
-			<tr>
-				<td>
-					<button type="submit" class="btn btn-primary">Voter</button>
-					
-				</td>
-				<td>
-					<form class="form-group" action="logout.php" method="post">
-						<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
-					</form>
-				</td>
-			</tr>
-		</table>
+		
+
+				<button type="submit" class="btn btn-primary">Voter</button>
+				<a href="logout.php" class="btn btn-danger" role="button">Se déconnecter</a>
+
 		</form>
+		
 	</div>	 
 
 	<?php

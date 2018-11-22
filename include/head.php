@@ -27,6 +27,9 @@
 			.texte-size2 {
 				font-size: small;
 			}
+			.button-margin {
+				margin:20px;
+			}
 		</style>
 
 	</head>
