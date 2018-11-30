@@ -135,10 +135,6 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
 			</div>';
 		}
 	}
-	
-	
-	
-
 }// else
 
 
