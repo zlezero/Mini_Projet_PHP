@@ -20,7 +20,11 @@ foreach (glob($fichiersVote."*.csv") as $filename) {
     // tout en explodant car le fichier est un csv
     $ligne = explode(',', $f[$ue_prof - 1]);
     $vote = intval($ligne[1]);// on ne prend que le vote; [0] : ue du professeur
-    $votes[$vote - 1] += 1;
+	
+	//On vérifie la validité des notes
+	if(intval($vote)<=5 && intval($vote)>=1) {
+		$votes[$vote - 1] += 1;
+	}
 }
 
 $somme = array_sum($votes);// on stocke cette valeur pour gagner du temps
@@ -37,7 +41,7 @@ echo "<p class='lead'>Total des votes pour votre matière : </p>";
 echo "<table class='table text-center table-striped'><thead class='thead-dark'><tr class='table-primary'>";
 // on affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
-    echo '<th scope="col">' . $n . '</th></td>';
+    echo '<th scope="col">' . $n . '</th>';
 }
 echo '<th scope="col">TOTAL</th></tr></thead><tbody><tr>';
 // on affiche les votes

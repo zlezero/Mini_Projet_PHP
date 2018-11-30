@@ -2,78 +2,30 @@
 
 require_once("config.php");
 require_once($fichiersInclude.'head.php');
+require_once("fonctions.php");
 
 if (!estConnecte() OR $_SESSION['role'] != "admin") { #Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un administrateur
     header('Location: index.php'); #On redirige vers la page de connexion
     exit;
 }
 
+//RECUPERATION DES DONNEES
+$tabs = calculDonneesAdmin() ;
+	
 //Tableau qui va contenir les différentes UE et les notes correspondantes
-$tabVoteUE = array( "ue1" => array(0, 0, 0, 0, 0),
-					"ue2" => array(0, 0, 0, 0, 0),
-					"ue3" => array(0, 0, 0, 0, 0),
-					"ue4" => array(0, 0, 0, 0, 0),
-					"ue5" => array(0, 0, 0, 0, 0));
+$tabVoteUE = $tabs["Votes"] ;
 
 //Tableau des totaux
-$tabNbVotes = array ("ue1" => 0,
-					"ue2" => 0,
-					"ue3" => 0,
-					"ue4" => 0,
-					"ue5" => 0,
-					"total" => 0);
+$tabNbVotes = $tabs["Totaux"] ;
 
 //Tableau des moyennes
-$tabMoyennes = array ("ue1" => 0,
-					"ue2" => 0,
-					"ue3" => 0,
-					"ue4" => 0,
-					"ue5" => 0) ;
-					
+$tabMoyennes = $tabs["Moyennes"] ;
+						
 //Tableau des écarts-types
-$tabET = array ("ue1" => 0,
-				"ue2" => 0,
-				"ue3" => 0,
-				"ue4" => 0,
-				"ue5" => 0) ;
-					
-					
-// Parccours des fichiers de vote
-foreach (glob($fichiersVote."*.csv") as $filename) {
-    $file = file($filename);
-	
-	//A chaque ligne on récupère l'ue et le vote correspondant
-	for ($ligne = 0; $ligne < sizeof($file); $ligne++) {
-		$ligneVote = explode(',', $file[$ligne]);
-		
-		$ue = $ligneVote[0] ;
-		$vote = $ligneVote[1] ;
-		//Ajout du vote au tableau des votes
-		$tabVoteUE[$ue][intval($vote)-1] +=1  ;
-		
-		//Ajout au nombre de votes total et celui de l'ue
-		$tabNbVotes["total"] +=1 ;
-		$tabNbVotes[$ue] +=1 ;
-		
-		//Ajout à la moyenne
-		$tabMoyennes[$ue] += intval($vote) ;
-	}
-}
+$tabET = $tabs["ET"] ;
+						
 
-//Calcul des moyennes
-foreach($tabMoyennes as $ue => $moyenne) {
-	$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
-}
-
-//Calcul des écarts-types
-foreach ($tabET as $ue => $val) {
-	foreach ($tabVoteUE[$ue] as $vote => $nb) {
-		$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
-	}
-	$val = $val/$tabNbVotes[$ue] ;
-	$tabET[$ue] = sqrt($val) ;
-}
-
+//AFFICHAGE DE LA PAGE
 echo "<div class='jumbotron'><div class='texte-centre'>";
 
 
@@ -96,7 +48,13 @@ foreach ($listeUE as $UE => $matiere) {
 
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		echo '<td>' . $nbVotes . '<br /><font size="2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</font></td>';
+		if ($nbVotes > 0) {
+			echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</div></td>';
+		}
+		
+		else {
+			echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit 0 %</div></td>';
+		}
 	}
 	
 	//Affichage du total
@@ -104,11 +62,11 @@ foreach ($listeUE as $UE => $matiere) {
 	
 	//Affichage de la moyenne et de l'écart-type
 	echo '<td>'.round($tabMoyennes[$UE],2).'</td>' ;
-	echo '<td>'.round($tabET[$UE],2).'</td></tr><tr>';
+	echo '<td>'.round($tabET[$UE],2).'</td></tr>';
 
 }
 
-echo "</tr></tbody></table></div>";
+echo "</tbody></table></div>";
 ?>
 	<table>
 		<tr>

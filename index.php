@@ -32,7 +32,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
           <label for="id">Identifiant :</label>
-          <input type="id" class="form-control" id="id" name="id" placeholder="Identifiant" required>
+          <input type="text" class="form-control" id="id" name="id" placeholder="Identifiant" required>
         </div>
       </div>
 
@@ -54,7 +54,5 @@
     </form>
 
   </div>
-
-</body>
 
 <?php require_once($fichiersInclude.'footer.php'); #On inclut le pied de page ?>
