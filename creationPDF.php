@@ -1,6 +1,8 @@
 <?php 
 	
-	require_once("config.php");
+	require_once("config.php");	
+	require("fpdf/fpdf.php"); //lien vers le fichier contenant la classe FPDF
+	require_once("fonctions.php") ; //On inclue la fonction de calcul des tableaux
 	
 	if (!estConnecte() OR $_SESSION['role'] != "admin") { #Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un administrateur
 		header('Location: index.php'); #On redirige vers la page de connexion
@@ -10,93 +12,42 @@
 	define("FPDF_FONTPATH","fpdf/font/"); 
 	//lien vers le dossier " font " 
 	
-	require("fpdf/fpdf.php"); 
-	//lien vers le fichier contenant la classe FPDF
-	
-	
+	//RECUPERATION DES DONNEES
+	$tabs = calculDonneesAdmin() ;
 	
 	//Tableau qui va contenir les différentes UE et les notes correspondantes
-	$tabVoteUE = array( "ue1" => array(0, 0, 0, 0, 0),
-						"ue2" => array(0, 0, 0, 0, 0),
-						"ue3" => array(0, 0, 0, 0, 0),
-						"ue4" => array(0, 0, 0, 0, 0),
-						"ue5" => array(0, 0, 0, 0, 0));
+	$tabVoteUE = $tabs["Votes"] ;
 
 	//Tableau des totaux
-	$tabNbVotes = array ("ue1" => 0,
-						"ue2" => 0,
-						"ue3" => 0,
-						"ue4" => 0,
-						"ue5" => 0,
-						"total" => 0);
+	$tabNbVotes = $tabs["Totaux"] ;
 
 	//Tableau des moyennes
-	$tabMoyennes = array ("ue1" => 0,
-						"ue2" => 0,
-						"ue3" => 0,
-						"ue4" => 0,
-						"ue5" => 0) ;
+	$tabMoyennes = $tabs["Moyennes"] ;
 						
 	//Tableau des écarts-types
-	$tabET = array ("ue1" => 0,
-					"ue2" => 0,
-					"ue3" => 0,
-					"ue4" => 0,
-					"ue5" => 0) ;
+	$tabET = $tabs["ET"] ;
 						
-						
-	// Parccours des fichiers de vote
-	foreach (glob($fichiersVote."*.csv") as $filename) {
-		$file = file($filename);
-		
-		//A chaque ligne on récupère l'ue et le vote correspondant
-		for ($ligne = 0; $ligne < sizeof($file); $ligne++) {
-			$ligneVote = explode(',', $file[$ligne]);
-			
-			$ue = $ligneVote[0] ;
-			$vote = $ligneVote[1] ;
-			//Ajout du vote au tableau des votes
-			$tabVoteUE[$ue][intval($vote)-1] +=1  ;
-			
-			//Ajout au nombre de votes total et celui de l'ue
-			$tabNbVotes["total"] +=1 ;
-			$tabNbVotes[$ue] +=1 ;
-		
-			//Ajout à la moyenne
-			$tabMoyennes[$ue] += intval($vote) ;
-		}
 
-
-		
-	}
-	//Calcul des moyennes
-	foreach($tabMoyennes as $ue => $moyenne) {
-		$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
-	}
-
-	//Calcul des écarts-types
-	foreach ($tabET as $ue => $val) {
-		foreach ($tabVoteUE[$ue] as $vote => $nb) {
-			$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
-		}
-		$val = $val/$tabNbVotes[$ue] ;
-		$tabET[$ue] = sqrt($val) ;
-	}
-	
-
+	// CREATION DU PDF :
 	$pdf = new FPDF("L","pt","A4"); 
 	//création d'une instance de classe:
-		//P pour portrait
+		//L = Landscape (orientation paysage)
 		//pt pour point en unité de mesure
 		//A4 pour le format
-		
-	// $pdf ->Open(); //indique que l'on crée un fichier PDF
 	
 	$pdf ->AddPage(); //permet d'ajouter une page
 	
 	
-	//Affichage du titre et du logo
+	$pdf ->SetFont('Times','',12); //choix de la police
+	
+	//Affichage de la date de création du PDF (date courante)
+	$pdf ->setXY(30,30) ;
+	$pdf ->Write(0,date('j/n/Y')) ;
+	
+	
 	$pdf ->SetFont('Times','B',18); //choix de la police
+	
+	//Affichage du titre et du logo
 	$pdf ->setXY(320,30) ;
 	$pdf ->setTitle("Recapitulatif"); //Nomme la page
 	$pdf ->Write(100,utf8_decode("Récapitulatif des votes")); //Ecrit le titre
@@ -105,6 +56,7 @@
 	
 	$pdf ->SetFont('Times','B',11); //choix de la police
 	$pdf -> SetFillColor('150','150','150') ; // Choix de la couleur de remplissage
+	
 	//Affichage du tableau :
 	foreach($notes as $num => $note) {
 		$pdf ->setXY(70+intval($num)*80,140) ;
@@ -122,7 +74,7 @@
 	}
 	
 	
-	$pdf ->SetFont('Times','',11);
+	$pdf ->SetFont('Times','',11); //On modifie la police (plus en gras, car contenu)
 	//Affichage des votes
 	// on affiche les votes
 	$pdf ->setXY(150,180) ;
@@ -133,6 +85,7 @@
 			$pdf ->Cell(80,60, utf8_decode($nbVotes." (". 100 * round($nbVotes / $tabNbVotes[$UE], 2)."%)"),1,0, 'C') ;
 		}
 		
+		//Affichage de la moyenne, de l'écart-type et du nombre de votes
 		$pdf -> Cell(80,60, utf8_decode($tabNbVotes[$UE]),1,0, 'C') ;
 		$pdf -> Cell(80,60, utf8_decode(round($tabMoyennes[$UE],2)),1,0, 'C') ;
 		$pdf -> Cell(80,60, utf8_decode(round($tabET[$UE],2)),1,0, 'C') ;
@@ -140,11 +93,7 @@
 		$cptr++ ;
 	}
 	
-	//Affichage de la date
-	$pdf ->setXY(30,30) ;
-	$pdf ->Write(0,date('j/n/Y')) ;
-	
-	//Footer
+	//Pied de page : Informations diverses
 	$pdf ->setXY(275,520) ;
 	$pdf ->Write(0,utf8_decode("IUT de Vélizy - Année 2018-2019 - Département informatique")) ;
 	$pdf ->setXY(250,535) ;

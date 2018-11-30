@@ -71,4 +71,119 @@
         }
 
     }
+	
+	
+	function calculDonneesAdmin() {
+		$fichiersVote = "votes/";
+		$listeUE = array("ue1","ue2","ue3","ue4","ue5");
+		
+		//Tableau qui va contenir les différentes UE et les notes correspondantes
+		$tabVoteUE = array( "ue1" => array(0, 0, 0, 0, 0),
+							"ue2" => array(0, 0, 0, 0, 0),
+							"ue3" => array(0, 0, 0, 0, 0),
+							"ue4" => array(0, 0, 0, 0, 0),
+							"ue5" => array(0, 0, 0, 0, 0));
+
+		//Tableau des totaux
+		$tabNbVotes = array ("ue1" => 0,
+							"ue2" => 0,
+							"ue3" => 0,
+							"ue4" => 0,
+							"ue5" => 0,
+							"total" => 0);
+
+		//Tableau des moyennes
+		$tabMoyennes = array ("ue1" => 0,
+							"ue2" => 0,
+							"ue3" => 0,
+							"ue4" => 0,
+							"ue5" => 0) ;
+							
+		//Tableau des écarts-types
+		$tabET = array ("ue1" => 0,
+						"ue2" => 0,
+						"ue3" => 0,
+						"ue4" => 0,
+						"ue5" => 0) ;
+							
+		
+		
+		// Parcours des fichiers de vote
+		foreach (glob($fichiersVote."*.csv") as $filename) {
+			$file = file($filename);
+			$erreur = False ;
+			$tabVoteEtu = array() ;
+			
+			//A chaque ligne on récupère l'ue et le vote correspondant
+			for ($ligne = 0; $ligne < sizeof($file); $ligne++) {
+				$ligneVote = explode(',', $file[$ligne]);
+				
+				$ue = $ligneVote[0] ;
+				$vote = $ligneVote[1] ;
+				
+				//On vérifie la validité des notes
+				if((intval($vote)<=5 && intval($vote)>=1) && in_array($ue,$listeUE)) {
+					$tabVoteEtu[$ue] = $vote ;
+				}
+				
+				//Si le fichier est erronné, on le supprime (car admin)
+				else {
+					$erreur = True ;
+					unlink($filename) ;
+				}
+			}
+		
+			if ($erreur == False) {
+				foreach($tabVoteEtu as $ue => $vote) {
+					//Ajout du vote au tableau des votes
+					$tabVoteUE[$ue][intval($vote)-1] +=1  ;
+				
+					//Ajout au nombre de votes total et celui de l'ue
+					$tabNbVotes["total"] +=1 ;
+					$tabNbVotes[$ue] +=1 ;
+				
+					//Ajout à la moyenne
+					$tabMoyennes[$ue] += intval($vote) ;	
+				}
+			}
+		}
+
+		//Calcul des moyennes
+		foreach($tabMoyennes as $ue => $moyenne) {
+			if ($tabNbVotes[$ue] > 0) { 
+				$tabMoyennes[$ue] = $moyenne/$tabNbVotes[$ue] ;
+			}
+			
+			else {
+				$tabMoyennes[$ue] = 0 ;
+			}
+		}
+
+		//Calcul des écarts-types
+		foreach ($tabET as $ue => $val) {
+			foreach ($tabVoteUE[$ue] as $vote => $nb) {
+				$val += $nb*pow(($vote +1 - $tabMoyennes[$ue]),2) ;
+			}
+			
+			if ($tabNbVotes[$ue] > 0) { 
+				$val = $val/$tabNbVotes[$ue] ;
+				$tabET[$ue] = sqrt($val) ;
+			}
+			
+			else {
+				$tabET[$ue] = 0 ;
+			}
+
+		}
+		
+		$resultat = array(
+						"Votes" => $tabVoteUE,
+						"Totaux" => $tabNbVotes,
+						"Moyennes" => $tabMoyennes,
+						"ET" => $tabET) ;
+		
+		return $resultat ;
+	
+	}
+	
 ?>

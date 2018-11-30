@@ -109,18 +109,32 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
 <?php
 
 	if (file_exists($voteFile)) { #On vérifie si le fichier existe bien
+		$erreur = False ;
 		$pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
 		while ( ($data = fgetcsv($pointeur)) !== FALSE) { #On affiche toutes les données du fichier
-			echo "<tr><td>".$listeUE[$data[0]]."</td><td>".$data[1]."/5</td></tr>";
+			if (in_array($data[0],$listeUE) && !empty($data[1]) && $data[1]<=5 && $data[1]>=1) {
+				echo "<tr><td>".$listeUE[$data[0]]."</td><td>".$data[1]."/5</td></tr>";
+			}
+			
+			else {
+				$erreur = True ;
+			}
 		}
 		fclose($pointeur);
+		
+		if ($erreur == True) {
+			unlink($voteFile) ;
+			header('Location: vote.php') ;
+		}
+		
+		else {
+			echo '</table><br><br>
+				<form class="form-group" action="logout.php" method="post">
+					<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
+				</form>
+			</div>';
+		}
 	}
-	echo '</table><br><br>
-		<form class="form-group" action="logout.php" method="post">
-			<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
-		</form>
-	</div>';
-
 }// else
 
 
