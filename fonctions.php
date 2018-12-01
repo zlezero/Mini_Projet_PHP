@@ -74,6 +74,7 @@
 	
 	
 	function calculDonneesAdmin() {
+		
 		$fichiersVote = "votes/";
 		$listeUE = array("ue1","ue2","ue3","ue4","ue5");
 		
@@ -109,28 +110,37 @@
 		
 		
 		// Parcours des fichiers de vote
-		foreach (glob($fichiersVote."*.csv") as $filename) {
+		foreach (glob($fichiersVote."vote-e????.csv") as $filename) {
 			$file = file($filename);
 			$erreur = False ;
 			$tabVoteEtu = array() ;
 			
 			//A chaque ligne on récupère l'ue et le vote correspondant
-			for ($ligne = 0; $ligne < sizeof($file); $ligne++) {
-				$ligneVote = explode(',', $file[$ligne]);
+			for ($ligne = 0; $ligne < count($file); $ligne++) {
 				
-				$ue = $ligneVote[0] ;
-				$vote = $ligneVote[1] ;
+				if (count($file) == 5) {
+					
+					$ligneVote = explode(',', $file[$ligne]);
+					
+					$ue = $ligneVote[0] ;
+					$vote = $ligneVote[1] ;
 				
-				//On vérifie la validité des notes
-				if((intval($vote)<=5 && intval($vote)>=1) && in_array($ue,$listeUE)) {
-					$tabVoteEtu[$ue] = $vote ;
+					//On vérifie la validité des notes
+					if((intval($vote)<=5 && intval($vote)>=1) && in_array($ue,$listeUE)) {
+						$tabVoteEtu[$ue] = $vote ;
+					}		
+					else { //Si le fichier est erronné, on le marque comme erroné
+						$erreur = True ;
+					}
+				}
+				else {
+					$erreur = True;
 				}
 				
-				//Si le fichier est erronné, on le supprime (car admin)
-				else {
-					$erreur = True ;
+				if ($erreur) { //Si il y a une erreur avec le fichier actuel on le supprime (car admin)
 					unlink($filename) ;
 				}
+
 			}
 		
 			if ($erreur == False) {
@@ -177,10 +187,10 @@
 		}
 		
 		$resultat = array(
-						"Votes" => $tabVoteUE,
-						"Totaux" => $tabNbVotes,
-						"Moyennes" => $tabMoyennes,
-						"ET" => $tabET) ;
+			"Votes" => $tabVoteUE,
+			"Totaux" => $tabNbVotes,
+			"Moyennes" => $tabMoyennes,
+			"ET" => $tabET) ;
 		
 		return $resultat ;
 	

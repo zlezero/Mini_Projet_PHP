@@ -82,7 +82,12 @@
 	foreach ($listeUE as $UE => $matiere) {
 		$pdf ->setXY(150,180+$cptr*60) ;
 		foreach ($tabVoteUE[$UE] as $nbVotes) {
-			$pdf ->Cell(80,60, utf8_decode($nbVotes." (". 100 * round($nbVotes / $tabNbVotes[$UE], 2)."%)"),1,0, 'C') ;
+			if ($nbVotes > 0) {
+				$pdf ->Cell(80,60, utf8_decode($nbVotes." (". 100 * round($nbVotes / $tabNbVotes[$UE], 2)."%)"),1,0, 'C') ;
+			}
+			else {
+				$pdf ->Cell(80,60, utf8_decode($nbVotes." (0%)"),1,0, 'C') ;
+			}
 		}
 		
 		//Affichage de la moyenne, de l'écart-type et du nombre de votes

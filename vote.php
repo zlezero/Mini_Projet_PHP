@@ -110,10 +110,12 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
 <?php
 
 	if (file_exists($voteFile)) { #On vérifie si le fichier existe bien
+	
 		$erreur = False ;
 		$listeue = array("ue1","ue2","ue3","ue4","ue5");
 		$pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
-		while ( ($data = fgetcsv($pointeur)) !== FALSE) { #On affiche toutes les données du fichier
+		
+		while ( ($data = fgetcsv($pointeur)) !== False) { #On affiche toutes les données du fichier
 			if (in_array($data[0],$listeue) && !empty($data[1]) && $data[1]<=5 && $data[1]>=1) {
 				echo "<tr><td>".$listeUE[$data[0]]."</td><td>".$data[1]."/5</td></tr>";
 			}

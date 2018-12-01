@@ -14,17 +14,31 @@ $ue_prof = intval(substr($_SESSION['id'], -1));
 $votes = array(0, 0, 0, 0, 0);// nombre de votes pour chaque catégories
 
 // on parcourt tous les fichiers de vote dans le répertoire 'votes'
-foreach (glob($fichiersVote."*.csv") as $filename) {
-    $f = file($filename);
-    // on ne récupère que la ligne concernant le professeur, ie son ue
-    // tout en explodant car le fichier est un csv
-    $ligne = explode(',', $f[$ue_prof - 1]);
-    $vote = intval($ligne[1]);// on ne prend que le vote; [0] : ue du professeur
+foreach (glob($fichiersVote."vote-e????.csv") as $filename) {
 	
+	$pointeur = fopen($filename, "r");
+	
+	while ( ($data = fgetcsv($pointeur)) !== FALSE) {
+		if (count($data) == 2) {
+			if ($data[0] == ("ue".($ue_prof)) ) {
+				$vote = intval($data[1]);// on ne prend que le vote; [0] : ue du professeur
+				if(intval($vote)<=5 && intval($vote)>=1) {
+					$votes[$vote - 1] += 1;
+				}
+			}
+		}
+
+	}
+	
+	/*$f = file($filename);
+	// on ne récupère que la ligne concernant le professeur, ie son ue
+	// tout en explodant car le fichier est un csv
+	$ligne = explode(',', $f[$ue_prof - 1]);
+	$vote = intval($ligne[1]);// on ne prend que le vote; [0] : ue du professeur
 	//On vérifie la validité des notes
 	if(intval($vote)<=5 && intval($vote)>=1) {
 		$votes[$vote - 1] += 1;
-	}
+	}*/
 }
 
 $somme = array_sum($votes);// on stocke cette valeur pour gagner du temps
@@ -35,7 +49,6 @@ echo '<h2 class="display-6">'.$_SESSION['id'].' - '. $listeUE['ue'.strval($ue_pr
 echo "<p class='lead'>Total des votes pour votre matière : </p>";
 
 // AFFICHAGE DES VOTES
-
 
 
 echo "<table class='table text-center table-striped'><thead class='thead-dark'><tr class='table-primary'>";
@@ -50,8 +63,14 @@ foreach ($votes as $v) {
 }
 echo '<td>'. $somme .'</td></tr><tr>';
 // et on affiche la proportion des votes
+
 foreach ($votes as $v) {
-    echo '<td>' . 100 * round($v / $somme, 2) . ' %</td>';
+	if ($v > 0) {
+		echo '<td>' . 100 * round($v / $somme, 2) . ' %</td>';
+	}
+	else {
+		echo '<td>0%</td>';
+	}
 }
 
 ?>
