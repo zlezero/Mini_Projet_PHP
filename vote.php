@@ -15,8 +15,18 @@ $voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv"; #On définit le format
 if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && isset($_POST['ue4']) && isset($_POST['ue5'])) { #On vérifie la validité du formulaire
 
 	if (!empty($_POST['ue1']) AND !empty($_POST['ue2']) AND !empty($_POST['ue3']) AND !empty($_POST['ue4']) AND !empty($_POST['ue5'])) {
-			
-		if (!file_exists($voteFile)) { //Si le fichier de vote n'existe pas
+		
+		for ($i=1;$i!=6;$i++) { #On regarde si les votes passés par POST ont le bon format
+			if (!preg_match("#ue[1-5]-[1-5]#", $_POST['ue'.$i])) { #Si ce n'est pas le cas on déclanche une erreur
+				$erreur = True;
+				break;
+			}
+			else {
+				$erreur = False;	
+			}
+		}
+		
+		if (!file_exists($voteFile) AND !$erreur) { //Si le fichier de vote n'existe pas
 
 			$pointeur = fopen($voteFile, "w"); //On ouvre alors le fichier en écriture
 			
@@ -47,7 +57,7 @@ if (!file_exists($voteFile)) { //Si le fichier de vote n'existe pas cela veut di
 	<div class="jumbotron">
 
 		<h3>Sélectionnez l'appréciation souhaitée pour chaque matière</h3>
-		<?php if (isset($erreur)) { afficherErreur("Votre formulaire est incomplet !"); } ?>
+		<?php if (isset($erreur)) { afficherErreur("Votre formulaire est incomplet ou incorrect !"); } ?>
 		<form class="form-group" method="post">
 		<table class='table table-striped'>
 			<thead class='thead-dark'>
