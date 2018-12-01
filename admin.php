@@ -1,5 +1,6 @@
 <?php
 
+//On inclut les fichiers nécessaires
 require_once("config.php");
 require_once($fichiersInclude.'head.php');
 
@@ -27,30 +28,27 @@ $tabET = $tabs["ET"] ;
 //AFFICHAGE DE LA PAGE
 echo "<div class='jumbotron'><div class='texte-centre'>";
 
-
 //AFFICHAGE DES EN-TETES DU TABLEAU
 echo "<table class='table table-striped'><thead class='thead-dark'><th scope='col'></th>";
 
-// on affiche les critères de sélection ("très mécontent", etc.)
+//On affiche les critères de sélection ("très mécontent", etc.)
 foreach ($notes as $n) {
 	echo '<th scope="col">' . $n . '</th>';
 }
+
 echo "<th scope='col'>Totaux</th><th scope='col'>Moyenne</th><th scope='col'>Ecart-type</th></tr></thead><tbody><tr>";
-
-
 
 //On affiche le tableau de votes pour chaque UE
 foreach ($listeUE as $UE => $matiere) {
 	
 	echo '<th>'.$UE.'  -  '.$matiere.'</th>';
 
-
 	// on affiche les votes
 	foreach ($tabVoteUE[$UE] as $nbVotes) {
-		if ($nbVotes > 0) {
-			echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</div></td>';
-		}
 		
+		if ($nbVotes > 0) { //Si il existe des votes (pour éviter la division par 0)
+			echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit '. 100 * round($nbVotes / $tabNbVotes[$UE], 2).' %</div></td>';
+		}	
 		else {
 			echo '<td>' . $nbVotes . '<br /><div class="texte-size2">soit 0 %</div></td>';
 		}
@@ -82,7 +80,7 @@ echo "</tbody></table></div>";
 		</tr>
     </table>
 	
-</div> <!-- Jumbotron -->
+</div>
 
 <?php
 require_once($fichiersInclude.'footer.php'); 

@@ -1,11 +1,11 @@
 <?php 
 	
 	require_once("config.php");	
-	require("fpdf/fpdf.php"); //lien vers le fichier contenant la classe FPDF
+	require("fpdf/fpdf.php"); //Lien vers le fichier contenant la classe FPDF
 	require_once("fonctions.php") ; //On inclue la fonction de calcul des tableaux
 	
-	if (!estConnecte() OR $_SESSION['role'] != "admin") { #Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un administrateur
-		header('Location: index.php'); #On redirige vers la page de connexion
+	if (!estConnecte() OR $_SESSION['role'] != "admin") { //Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un administrateur
+		header('Location: index.php'); //On redirige vers la page de connexion
 		exit;
 	}
 
@@ -30,7 +30,7 @@
 
 	// CREATION DU PDF :
 	$pdf = new FPDF("L","pt","A4"); 
-	//création d'une instance de classe:
+	//Création d'une instance de classe:
 		//L = Landscape (orientation paysage)
 		//pt pour point en unité de mesure
 		//A4 pour le format
@@ -76,7 +76,7 @@
 	
 	$pdf ->SetFont('Times','',11); //On modifie la police (plus en gras, car contenu)
 	//Affichage des votes
-	// on affiche les votes
+	
 	$pdf ->setXY(150,180) ;
 	$cptr = 0 ;
 	foreach ($listeUE as $UE => $matiere) {
@@ -104,6 +104,6 @@
 	$pdf ->setXY(250,535) ;
 	$pdf ->SetFont('Times','',8); //choix de la police
 	$pdf ->Write(0,utf8_decode("LEVESQUE Yanis - VATHONNE Thomas - REPAIN Paul - HARDY Raphaël - PREVOT Carmen")) ;
-	$pdf ->Output(); //génère le PDF et l'affiche	
+	$pdf ->Output(); //Génère le PDF et l'affiche	
 
 ?>

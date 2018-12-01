@@ -1,33 +1,33 @@
 <?php
 
+//On inclut les fichiers nécessaires
 require_once("config.php");
 require_once($fichiersInclude.'head.php');
 
-if (!estConnecte() OR $_SESSION['role'] != "etudiant") { #Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un étudiant
-	header('Location: index.php'); #On redirige vers la page de connexion
+if (!estConnecte() OR $_SESSION['role'] != "etudiant") { //Si on arrive sur cette page alors que l'on est pas connecté / ou que l'on n'est pas un étudiant
+	header('Location: index.php'); //On redirige vers la page de connexion
 	exit;
 }
 
 $voteFile = $fichiersVote."vote-".$_SESSION['id'].".csv"; #On définit le format du fichier de vote
 
-// écriture dans le fichier de vote
+//Écriture dans le fichier de vote
 if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && isset($_POST['ue4']) && isset($_POST['ue5'])) { #On vérifie la validité du formulaire
 
 	if (!empty($_POST['ue1']) AND !empty($_POST['ue2']) AND !empty($_POST['ue3']) AND !empty($_POST['ue4']) AND !empty($_POST['ue5'])) {
-		
-		
-		if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas
-
-			$pointeur = fopen($voteFile, "w"); #On ouvre alors le fichier en écriture
 			
-			foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières on écrit l'ue puis le vote associé
+		if (!file_exists($voteFile)) { //Si le fichier de vote n'existe pas
+
+			$pointeur = fopen($voteFile, "w"); //On ouvre alors le fichier en écriture
+			
+			foreach($listeMatieres as $matieres => $ue) { //Pour chaque matières on écrit l'ue puis le vote associé
 				$array = explode("-", $_POST[$ue]);
 				$notation = array($ue, $array[1]);
 				fputcsv($pointeur, $notation); 
 	
 			}
 	
-			fclose($pointeur); #On ferme le fichier
+			fclose($pointeur); //On ferme le fichier
 			
 		}
 		else {
@@ -35,14 +35,14 @@ if ( isset($_POST['ue1']) && isset($_POST['ue2']) && isset($_POST['ue3']) && iss
 		}
 
 	}
-	else {
+	else { //Si le formulaire est incorrect
 		$erreur = True;
 	}
 
 }
 
-// vote de l'étudiant
-if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
+//Vote de l'étudiant
+if (!file_exists($voteFile)) { //Si le fichier de vote n'existe pas cela veut dire que l'étudiant n'a pas encore voté
 ?>
 	<div class="jumbotron">
 
@@ -62,13 +62,13 @@ if (!file_exists($voteFile)) { #Si le fichier de vote n'existe pas cela veut dir
 			</thead>
 <?php  
 
-	foreach($listeMatieres as $matieres => $ue) { #Pour chaque matières différentes on affiche un formulaire différent
+	foreach($listeMatieres as $matieres => $ue) { //Pour chaque matières différentes on affiche un formulaire différent
 ?>
 				<tr>
 				<td><h5 class="display-6"><?php echo $matieres ?></h5></td>
 				<label class="radio-inline">
 				<?php 
-					foreach($notes as $note => $description) {
+					foreach($notes as $note => $description) { //Pour chaque type de vote on ajoute un radio button 
 						echo '<td><input type="radio" name="'.$ue.'" value="'.$ue.'-'.$note.'" id="'.$ue.'-'.$note.'" required /> <label for="'.$ue.'-'.$note.'"></label></td>';
 					}
 				?>
@@ -116,35 +116,36 @@ else { #Sinon si l'étudiant a déjà voté on affiche les résultats de son vot
 		$pointeur = fopen($voteFile, "r"); #On l'ouvre en lecture
 		
 		while ( ($data = fgetcsv($pointeur)) !== False) { #On affiche toutes les données du fichier
-			if (in_array($data[0],$listeue) && !empty($data[1]) && $data[1]<=5 && $data[1]>=1) {
+		
+			if (in_array($data[0],$listeue) && !empty($data[1]) && $data[1]<=5 && $data[1]>=1) { //On vérifie si le contenu du fichier est correct
 				echo "<tr><td>".$listeUE[$data[0]]."</td><td>".$data[1]."/5</td></tr>";
 			}
-			
 			else {
-				$erreur = True ;
+				$erreur = True;
 			}
 		}
-		fclose($pointeur);
 		
-		if ($erreur == True) {
-			unlink($voteFile) ;
-			header('Location: vote.php') ;
+		fclose($pointeur); //On ferme le fichier
+		
+		if ($erreur) { //Si il y a une erreur dans le fichier
+			unlink($voteFile); //On le supprimer
+			header('Location: vote.php'); //Et on actualise la page actuelle
+			exit;
 		}
-		
-		else {
-			echo '</table><br><br>
+		else { //Sinon on affiche le reste de la page
+			?></table><br><br>
 				<form class="form-group" action="logout.php" method="post">
 					<button type="submit" class="btn btn-danger" style="margin:20px;">Se déconnecter</button>
 				</form>
-			</div>';
+			</div><?php
 		}
 	}
 	
 	
 	
 
-}// else
+}//else
 
+require_once($fichiersInclude.'footer.php');
 
-require_once($fichiersInclude.'footer.php'); 
 ?>

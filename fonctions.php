@@ -2,7 +2,7 @@
 
     require_once("config.php");
 
-    function afficherErreur($erreur) {
+    function afficherErreur($erreur) { //Affiche une alerte d'erreur
         ?>
         
         <div class="form-control-feedback alert alert-danger alert-dismissible fade show" role="alert">
@@ -20,7 +20,7 @@
         <?php
     }
     
-    function afficherSucces($message) {
+    function afficherSucces($message) { //Affiche une alerte de succès
         ?>
 
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,19 +35,19 @@
         <?php
     }
 
-    function estConnecte() {
+    function estConnecte() { //Renvoie si une personne est connectée ou non
         
         $roles = array("admin", "etudiant", "professeur");
         if (isset($_SESSION['id']) AND isset($_SESSION['role'])) {
             
             if ( (!empty($_SESSION['id'])) AND in_array($_SESSION['role'], $roles) ) {
-                return TRUE;
+                return True;
             }
         }
-        return FALSE;
+        return False;
     }
 
-    function redirigerBonnePage() {
+    function redirigerBonnePage() { //Redirige un utilisateur sur sa page associée
 
         if (estConnecte()) {
 
@@ -73,7 +73,7 @@
     }
 	
 	
-	function calculDonneesAdmin() {
+	function calculDonneesAdmin() { //Calcul toutes les données nécessaires pour la page admin et le pdf
 		
 		$fichiersVote = "votes/";
 		$listeUE = array("ue1","ue2","ue3","ue4","ue5");
@@ -109,8 +109,10 @@
 							
 		
 		
-		// Parcours des fichiers de vote
+		//Parcours des fichiers de vote
+		
 		foreach (glob($fichiersVote."vote-e????.csv") as $filename) {
+			
 			$file = file($filename);
 			$erreur = False ;
 			$tabVoteEtu = array() ;
@@ -144,6 +146,7 @@
 			}
 		
 			if ($erreur == False) {
+				
 				foreach($tabVoteEtu as $ue => $vote) {
 					//Ajout du vote au tableau des votes
 					$tabVoteUE[$ue][intval($vote)-1] +=1  ;
@@ -192,7 +195,7 @@
 			"Moyennes" => $tabMoyennes,
 			"ET" => $tabET) ;
 		
-		return $resultat ;
+		return $resultat;
 	
 	}
 	

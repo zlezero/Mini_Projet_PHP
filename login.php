@@ -4,14 +4,15 @@ require_once('config.php');
 
 if ( (isset($_POST['id']) && isset($_POST['pwd'])) AND !(empty($_POST['id']) && empty($_POST['pwd'])) ) { #On vérifie la validité du formulaire
 
-    foreach($listeFichiers as $fichier) {
+    foreach($listeFichiers as $fichier) { //Pour tout les .csv dans le dossier /csv
 
-        if (file_exists($fichier)) {
+        if (file_exists($fichier)) { //Si le fichier existe bien
 
-            $pointeur = fopen($fichier, "r");
-            while ( ($data = fgetcsv($pointeur)) !== FALSE) {
+            $pointeur = fopen($fichier, "r"); //Alors on l'ouvre
+			
+            while ( ($data = fgetcsv($pointeur)) !== FALSE) { //Tant qu'il y a des données dans le fichier
                 
-                if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) {
+                if ( $_POST['id'] == $data[0] && $_POST['pwd'] == $data[1] ) { //Si le login et le mot de passe correspondent à une entrée dans le fichier
                     
                     $_SESSION['id'] = $data[0];
                     
