@@ -74,7 +74,7 @@ foreach ($votes as $v) { //Pour tout les votes
 }
 
 ?>
-            </tr>
+            <td></td></tr>
         </tbody>
     </table>
     <form class="form-group" action="logout.php" method="post">
